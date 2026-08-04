@@ -22,11 +22,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://nginx/api/:path*', // Proxy requests to backend via nginx
+        destination: 'http://127.0.0.1:8000/api/:path*', // Proxy requests to local Django backend
       },
       {
         source: '/media/:path*',
-        destination: 'http://nginx/media/:path*', // Proxy media requests
+        destination: 'http://127.0.0.1:8000/media/:path*', // Proxy media requests to local backend
       },
     ];
   },

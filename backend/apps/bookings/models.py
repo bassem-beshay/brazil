@@ -10,8 +10,8 @@ class Coupon(BaseModel):
         ('fixed', 'Fixed Amount ($)'),
     )
     
-    code = models.CharField(max_value=50, unique=True)
-    discount_type = models.CharField(max_value=15, choices=DISCOUNT_TYPE_CHOICES, default='percentage')
+    code = models.CharField(max_length=50, unique=True)
+    discount_type = models.CharField(max_length=15, choices=DISCOUNT_TYPE_CHOICES, default='percentage')
     value = models.DecimalField(max_digits=10, decimal_places=2)
     active = models.BooleanField(default=True)
     start_date = models.DateField()
@@ -36,10 +36,10 @@ class Booking(BaseModel):
         ('refunded', 'Refunded'),
     )
     
-    booking_reference = models.CharField(max_value=50, unique=True, default=uuid.uuid4)
+    booking_reference = models.CharField(max_length=50, unique=True, default=uuid.uuid4)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='bookings')
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True, related_name='bookings')
-    status = models.CharField(max_value=15, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
     
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     tax_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -62,7 +62,7 @@ class BookingItem(models.Model):
     )
     
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='items')
-    item_type = models.CharField(max_value=15, choices=ITEM_TYPE_CHOICES)
+    item_type = models.CharField(max_length=15, choices=ITEM_TYPE_CHOICES)
     
     # FKs (Nullable, depending on what type of item is added)
     tour_package = models.ForeignKey(TourPackage, on_delete=models.SET_NULL, null=True, blank=True)
@@ -80,11 +80,11 @@ class BookingItem(models.Model):
 
 class Traveler(models.Model):
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='travelers')
-    first_name = models.CharField(max_value=100)
-    last_name = models.CharField(max_value=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     email = models.EmailField()
-    phone_number = models.CharField(max_value=30, blank=True, null=True)
-    passport_number = models.CharField(max_value=50, blank=True, null=True)
+    phone_number = models.CharField(max_length=30, blank=True, null=True)
+    passport_number = models.CharField(max_length=50, blank=True, null=True)
     age = models.PositiveIntegerField()
 
     def __str__(self):
@@ -99,10 +99,10 @@ class Payment(BaseModel):
     )
     
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='payments')
-    transaction_id = models.CharField(max_value=100, unique=True)
-    payment_method = models.CharField(max_value=30, default='stripe')
+    transaction_id = models.CharField(max_length=100, unique=True)
+    payment_method = models.CharField(max_length=30, default='stripe')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_value=15, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
     response_data = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
@@ -110,7 +110,7 @@ class Payment(BaseModel):
 
 class Invoice(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='invoice')
-    invoice_number = models.CharField(max_value=100, unique=True)
+    invoice_number = models.CharField(max_length=100, unique=True)
     pdf_file = models.FileField(upload_to='invoices/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

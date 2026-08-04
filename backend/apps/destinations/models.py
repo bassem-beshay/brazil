@@ -2,14 +2,14 @@ from django.db import models
 from apps.core.models import BaseModel
 
 class Country(BaseModel):
-    name = models.CharField(max_value=100)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
     image = models.ImageField(upload_to='countries/', blank=True, null=True)
     featured = models.BooleanField(default=False)
     
     # SEO configurations
-    seo_title = models.CharField(max_value=150, blank=True, null=True)
+    seo_title = models.CharField(max_length=150, blank=True, null=True)
     seo_description = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -21,7 +21,7 @@ class Country(BaseModel):
 
 class City(BaseModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='cities')
-    name = models.CharField(max_value=100)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
     image = models.ImageField(upload_to='cities/', blank=True, null=True)
@@ -38,7 +38,7 @@ class City(BaseModel):
 
 class Destination(BaseModel):
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='destinations')
-    name = models.CharField(max_value=150)
+    name = models.CharField(max_length=150)
     slug = models.SlugField(unique=True)
     description = models.TextField()
     main_image = models.ImageField(upload_to='destinations/')

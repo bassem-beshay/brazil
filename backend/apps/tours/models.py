@@ -4,9 +4,9 @@ from apps.core.models import BaseModel
 from apps.destinations.models import City
 
 class Category(BaseModel):
-    name = models.CharField(max_value=100)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
-    icon = models.CharField(max_value=50, help_name="FontAwesome icon class name e.g. fa-hiking")
+    icon = models.CharField(max_length=50, help_text="FontAwesome icon class name e.g. fa-hiking")
     description = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -24,12 +24,12 @@ class Tour(BaseModel):
     
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='tours')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='tours')
-    name = models.CharField(max_value=200)
+    name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField()
     duration_days = models.PositiveIntegerField(default=1)
     duration_hours = models.PositiveIntegerField(default=0)
-    difficulty = models.CharField(max_value=10, choices=DIFFICULTY_CHOICES, default='easy')
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     max_group_size = models.PositiveIntegerField(default=15)
     
     inclusions = models.JSONField(default=list, blank=True, help_text="List of items included in the tour")
@@ -41,7 +41,7 @@ class Tour(BaseModel):
     is_active = models.BooleanField(default=True)
 
     # SEO configs
-    seo_title = models.CharField(max_value=150, blank=True, null=True)
+    seo_title = models.CharField(max_length=150, blank=True, null=True)
     seo_description = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -63,22 +63,22 @@ class TourPackage(BaseModel):
     )
     
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='packages')
-    title = models.CharField(max_value=150)
+    title = models.CharField(max_length=150)
     start_date = models.DateField()
     end_date = models.DateField()
     price_per_person = models.DecimalField(max_digits=10, decimal_places=2)
     available_spots = models.PositiveIntegerField()
-    status = models.CharField(max_value=15, choices=STATUS_CHOICES, default='active')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
         return f"{self.title} ({self.start_date} to {self.end_date})"
 
 class Hotel(BaseModel):
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='hotels')
-    name = models.CharField(max_value=200)
+    name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField()
-    address = models.CharField(max_value=255)
+    address = models.CharField(max_length=255)
     star_rating = models.DecimalField(max_digits=2, decimal_places=1, default=4.0)
     amenities = models.JSONField(default=list, blank=True, help_text="List of amenities: ['Pool', 'WiFi', 'Spa']")
     featured = models.BooleanField(default=False)
@@ -93,7 +93,7 @@ class HotelImage(models.Model):
 
 class Room(BaseModel):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='rooms')
-    name = models.CharField(max_value=150)
+    name = models.CharField(max_length=150)
     description = models.TextField()
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
     capacity = models.PositiveIntegerField(default=2)
@@ -112,8 +112,8 @@ class Vehicle(BaseModel):
         ('boat', 'Speed Boat/Catamaran'),
     )
     
-    name = models.CharField(max_value=100)
-    type = models.CharField(max_value=15, choices=TYPE_CHOICES, default='sedan')
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='sedan')
     description = models.TextField()
     price_per_day = models.DecimalField(max_digits=10, decimal_places=2)
     capacity = models.PositiveIntegerField(default=4)

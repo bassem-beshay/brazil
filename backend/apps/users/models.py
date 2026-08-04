@@ -35,9 +35,9 @@ class User(AbstractUser):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_value=30, blank=True, null=True)
+    phone_number = models.CharField(max_length=30, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    role = models.CharField(max_value=20, choices=ROLE_CHOICES, default='customer')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
     preferences = models.JSONField(default=dict, blank=True)
 
     objects = UserManager()
@@ -50,7 +50,7 @@ class User(AbstractUser):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
-    title = models.CharField(max_value=255)
+    title = models.CharField(max_length=255)
     message = models.TextField()
     read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
