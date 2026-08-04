@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { Search, Calendar, Users, Shield, Sparkles, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AIChatBot } from '@/components/AIChatBot';
+import { Button } from '@/components/Button';
 
 interface TourPackage {
   id: string;
@@ -109,12 +110,14 @@ export default function HomePage() {
             </div>
 
             <div className="flex gap-4 w-full md:w-auto">
-              <Link 
+              <Button 
                 href={`/tours?search=${searchQuery}`}
-                className="bg-[#1B5E20] hover:bg-[#2E7D32] transition-colors text-white font-semibold text-sm px-8 py-3 rounded-xl flex items-center justify-center gap-2 w-full"
+                variant="primary"
+                size="md"
+                className="w-full md:w-auto"
               >
                 Search Experiences
-              </Link>
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -238,12 +241,15 @@ export default function HomePage() {
                 <option value="cultural">Salvador / Historical Cultural</option>
               </select>
             </div>
-            <button 
-              type="submit" 
-              className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-semibold text-sm py-3 rounded-xl col-span-1 md:col-span-2 mt-2 transition-colors cursor-pointer"
+            <Button 
+              type="submit"
+              variant="primary"
+              size="md"
+              fullWidth
+              className="col-span-1 md:col-span-2 mt-2"
             >
               {aiLoading ? "Consulting AI Concierge..." : "Generate AI Recommendation"}
-            </button>
+            </Button>
           </form>
         </div>
 
