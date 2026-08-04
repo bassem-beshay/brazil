@@ -1,0 +1,1 @@
+# destinations migrations initialization

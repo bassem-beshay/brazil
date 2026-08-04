@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #1B5E20; /* Amazon Green */
+    --primary-medium: #2E7D32; /* Forest Green */
+    --primary-light: #43A047; /* Tropical Green */
+    --accent-yellow: #FBC02D; /* Golden Yellow */
+    --accent-blue: #1565C0; /* Deep Ocean Blue */
+    --accent-orange: #FF7043; /* Sunset Orange */
+    --accent-pink: #EC407A; /* Brazilian Tropical Pink */
+    --background: #F8F9FA; /* Warm Gray */
+    --card: #FFFFFF;
+    --text-dark: #263238; /* Dark Gray */
+    --text-light: #546E7A;
+    --border: #E0E0E0;
+    
+    --radius-lg: 1rem;
+    --radius-md: 0.75rem;
+    --radius-sm: 0.5rem;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text-dark);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Glassmorphism helpers */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.glass-effect-dark {
+  background: rgba(38, 50, 56, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(46, 125, 50, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 125, 50, 0.6);
+}
+
+/* Subtle premium shadows */
+.shadow-premium {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.shadow-premium-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shadow-premium-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* Animated backgrounds */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.glow-ambient {
+  animation: pulseGlow 8s infinite ease-in-out;
+}

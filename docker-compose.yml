@@ -1,0 +1,175 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: brazil_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=brazil_db
+      - POSTGRES_USER=brazil_admin
+      - POSTGRES_PASSWORD=brazil_secure_password
+    ports:
+      - "5432:5432"
+    networks:
+      - brazil_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: brazil_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - brazil_network
+
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: brazil_backend_web
+    command: /entrypoint.sh
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-premium-luxury-brazil-tourism-key-2026
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web,nginx
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+      - POSTGRES_DB=brazil_db
+      - POSTGRES_USER=brazil_admin
+      - POSTGRES_PASSWORD=brazil_secure_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - STRIPE_PUBLIC_KEY=pk_test_mock_luxury_travel_girasol
+      - STRIPE_SECRET_KEY=sk_test_mock_luxury_travel_girasol
+      - STRIPE_WEBHOOK_SECRET=whsec_mock_luxury_travel_girasol
+    depends_on:
+      - db
+      - redis
+    networks:
+      - brazil_network
+
+  daphne:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: brazil_backend_asgi
+    command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    volumes:
+      - ./backend:/app
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-premium-luxury-brazil-tourism-key-2026
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web,nginx,daphne
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+      - POSTGRES_DB=brazil_db
+      - POSTGRES_USER=brazil_admin
+      - POSTGRES_PASSWORD=brazil_secure_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - brazil_network
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: brazil_celery_worker
+    command: celery -A config worker --loglevel=info
+    volumes:
+      - ./backend:/app
+      - media_volume:/app/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-premium-luxury-brazil-tourism-key-2026
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web,nginx
+      - POSTGRES_DB=brazil_db
+      - POSTGRES_USER=brazil_admin
+      - POSTGRES_PASSWORD=brazil_secure_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - STRIPE_SECRET_KEY=sk_test_mock_luxury_travel_girasol
+    depends_on:
+      - redis
+      - db
+    networks:
+      - brazil_network
+
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: brazil_celery_beat
+    command: celery -A config beat --loglevel=info
+    volumes:
+      - ./backend:/app
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-premium-luxury-brazil-tourism-key-2026
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web,nginx
+      - POSTGRES_DB=brazil_db
+      - POSTGRES_USER=brazil_admin
+      - POSTGRES_PASSWORD=brazil_secure_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - db
+    networks:
+      - brazil_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: brazil_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+      - NEXT_PUBLIC_WS_URL=ws://localhost/ws
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_mock_luxury_travel_girasol
+    depends_on:
+      - web
+    networks:
+      - brazil_network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: brazil_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    depends_on:
+      - web
+      - daphne
+      - frontend
+    networks:
+      - brazil_network
+
+networks:
+  brazil_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

@@ -1,0 +1,211 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="container-fluid pt-3">
+    <!-- Header Page Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 text-dark font-weight-bold">Executive Analytics & Reports</h1>
+        <div>
+            <a href="/admin/analytics/export/excel/" class="btn btn-success font-weight-bold mr-2">
+                <i class="fas fa-file-excel mr-1"></i> Export Passenger Manifest
+            </a>
+            <a href="/admin/analytics/export/pdf/" class="btn btn-danger font-weight-bold">
+                <i class="fas fa-file-pdf mr-1"></i> Export Financial PDF
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary Metrics Grid -->
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success shadow-sm">
+                <div class="inner">
+                    <h3>${{ total_sales|floatformat:2 }}</h3>
+                    <p class="font-weight-bold">Confirmed Gross Revenue</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info shadow-sm">
+                <div class="inner">
+                    <h3>{{ conversion_rate }}%</h3>
+                    <p class="font-weight-bold">Bookings Conversion Rate</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning shadow-sm text-dark">
+                <div class="inner">
+                    <h3>{{ bookings_count }}</h3>
+                    <p class="font-weight-bold">Total Reservations Created</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger shadow-sm">
+                <div class="inner">
+                    <h3>{{ cancelled_count }}</h3>
+                    <p class="font-weight-bold">Cancelled & Refunded</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-ban"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card card-dark shadow-sm">
+                <div class="card-header border-0 bg-success text-white">
+                    <h3 class="card-title font-weight-bold">Monthly Sales Performance</h3>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative mb-4">
+                        <canvas id="sales-chart" height="240"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card card-dark shadow-sm">
+                <div class="card-header border-0 bg-success text-white">
+                    <h3 class="card-title font-weight-bold">Popular Packages Demand</h3>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative mb-4">
+                        <canvas id="tours-chart" height="240"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Table -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header border-0 bg-secondary text-white">
+                    <h3 class="card-title font-weight-bold">Recent Booking Activities</h3>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Booking Reference</th>
+                                <th>Client Profile</th>
+                                <th>Total Bill</th>
+                                <th>Discount Applied</th>
+                                <th>Grand Total</th>
+                                <th>Reservation Status</th>
+                                <th>Created Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in recent_bookings %}
+                            <tr>
+                                <td>
+                                    <a href="/admin/bookings/booking/{{ b.id }}/change/" class="text-success font-weight-bold">
+                                        {{ b.booking_reference|slice:":8"|upper }}...
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if b.user %}
+                                        {{ b.user.email }}
+                                    {% else %}
+                                        <span class="badge badge-secondary">Guest Booking</span>
+                                    {% endif %}
+                                </td>
+                                <td>${{ b.total_price }}</td>
+                                <td>-${{ b.discount_amount }}</td>
+                                <td class="text-success font-weight-bold">${{ b.grand_total }}</td>
+                                <td>
+                                    {% if b.status == 'confirmed' %}
+                                        <span class="badge badge-success">Confirmed</span>
+                                    {% elif b.status == 'pending' %}
+                                        <span class="badge badge-warning">Pending Payment</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">{{ b.get_status_display }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ b.created_at|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4">No booking reservations tracked yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Sales Chart
+        const salesCtx = document.getElementById('sales-chart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_monthly_labels|safe }},
+                datasets: [{
+                    label: 'Gross Sales ($)',
+                    data: {{ chart_monthly_data|safe }},
+                    backgroundColor: '#43A047', // Tropical Green
+                    borderColor: '#1B5E20',     // Amazon Green
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Tours Demand Chart
+        const toursCtx = document.getElementById('tours-chart').getContext('2d');
+        new Chart(toursCtx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ chart_tour_labels|safe }},
+                datasets: [{
+                    data: {{ chart_tour_data|safe }},
+                    backgroundColor: [
+                        '#1B5E20', // Amazon Green
+                        '#FBC02D', // Golden Yellow
+                        '#1565C0', // Deep Ocean Blue
+                        '#FF7043', // Sunset Orange
+                        '#EC407A'  // Brazilian Tropical Pink
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    });
+</script>
+{% endblock %}
