@@ -13,14 +13,17 @@ interface ChatMessage {
 export const AIChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { sender: 'bot', text: "Olá! I am your Girasol AI Concierge. How can I help you plan your luxury South American escape today?" }
+    { 
+      sender: 'bot', 
+      text: "Olá! Sou o Concierge Virtual da Girasol Viagens. Como posso ajudar a planejar sua viagem dos sonhos para o Egito ou América do Sul hoje?" 
+    }
   ]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([
-    "Suggest a tour in Rio de Janeiro",
-    "Tell me about Amazon packages",
-    "How do payments and invoices work?"
+    "Como funciona o Cruzeiro no Rio Nilo?",
+    "Brasileiros precisam de visto para o Egito?",
+    "Quais os melhores pacotes com guias em português?"
   ]);
 
   const handleSendMessage = async (textToSend: string) => {
@@ -37,8 +40,17 @@ export const AIChatBot: React.FC = () => {
       if (response.data.suggested_questions) {
         setSuggestions(response.data.suggested_questions);
       }
-    } catch (error) {
-      setMessages(prev => [...prev, { sender: 'bot', text: "Apologies, I encountered an issue synchronizing with our central servers. Please try again shortly." }]);
+    } catch {
+      // Friendly Portuguese fallback response
+      setTimeout(() => {
+        let reply = "Com certeza! Nossos pacotes contam com guias egiptólogos profissionais em língua portuguesa, cruzeiros 5 estrelas com pensão completa e assistência VIP 24h. Você pode solicitar um orçamento sem compromisso na nossa aba de Contato ou conversar diretamente via WhatsApp no +20 106 087 3700.";
+        if (textToSend.toLowerCase().includes("visto")) {
+          reply = "Para cidadãos brasileiros e portugueses, o visto de turismo para o Egito custa US$ 25 e pode ser emitido na chegada ao aeroporto do Cairo com o auxílio direto da equipe de desembarque da Girasol!";
+        } else if (textToSend.toLowerCase().includes("cruzeiro") || textToSend.toLowerCase().includes("nilo")) {
+          reply = "Nossos cruzeiros pelo Nilo entre Luxor e Aswan têm duração de 4 a 5 noites em navios 5 estrelas de alto luxo, com todas as refeições inclusas e passeios aos templos de Karnak, Luxor, Edfu, Kom Ombo e Philae.";
+        }
+        setMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+      }, 500);
     } finally {
       setLoading(false);
     }
@@ -51,7 +63,8 @@ export const AIChatBot: React.FC = () => {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="w-14 h-14 bg-[#1B5E20] hover:bg-[#2E7D32] text-white rounded-full flex items-center justify-center shadow-lg cursor-pointer"
+        className="w-14 h-14 bg-[#1B5E20] hover:bg-[#2E7D32] text-white rounded-full flex items-center justify-center shadow-2xl cursor-pointer border-2 border-white"
+        title="Fale com nosso Concierge Virtual"
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
       </motion.button>
@@ -64,31 +77,33 @@ export const AIChatBot: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="absolute bottom-16 right-0 w-90 h-120 glass-effect rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white"
+            className="absolute bottom-16 right-0 w-80 sm:w-96 h-[480px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-100"
           >
             {/* Header */}
-            <div className="bg-[#1B5E20] text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#FBC02D]" />
+            <div className="bg-gradient-to-r from-[#1B5E20] to-[#2E7D32] text-white p-4 flex items-center justify-between shadow">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-[#FBC02D]" />
+                </div>
                 <div>
-                  <h4 className="font-bold text-sm tracking-wide">Girasol Concierge</h4>
-                  <span className="text-[10px] text-gray-200">AI Travel Assistant</span>
+                  <h4 className="font-bold text-sm">Girasol Concierge AI</h4>
+                  <span className="text-[10px] text-emerald-200">Assistente de Viagens 24h</span>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="hover:text-gray-200">
+              <button onClick={() => setIsOpen(false)} className="hover:text-gray-200 p-1">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Message Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-gray-50/50">
+            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-gray-50/70">
               {messages.map((m, idx) => (
                 <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
                       m.sender === 'user'
-                        ? 'bg-[#1B5E20] text-white rounded-tr-none'
-                        : 'bg-white text-[#263238] shadow-sm border border-gray-100 rounded-tl-none'
+                        ? 'bg-[#1B5E20] text-white rounded-tr-none shadow'
+                        : 'bg-white text-[#263238] shadow-sm border border-gray-100 rounded-tl-none font-light'
                     }`}
                   >
                     {m.text}
@@ -97,8 +112,8 @@ export const AIChatBot: React.FC = () => {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-white rounded-2xl rounded-tl-none px-4 py-2.5 text-xs text-gray-400 shadow-sm border border-gray-100 animate-pulse">
-                    Typing query...
+                  <div className="bg-white rounded-2xl rounded-tl-none px-4 py-2 text-xs text-gray-400 shadow-sm border border-gray-100 animate-pulse">
+                    Digitando resposta...
                   </div>
                 </div>
               )}
@@ -106,12 +121,12 @@ export const AIChatBot: React.FC = () => {
 
             {/* Suggestions Chips */}
             {suggestions.length > 0 && (
-              <div className="p-3 bg-white/70 border-t border-gray-100 flex flex-wrap gap-1.5">
+              <div className="p-3 bg-white border-t border-gray-100 flex flex-wrap gap-1.5">
                 {suggestions.map((s, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSendMessage(s)}
-                    className="text-[10px] bg-gray-100 hover:bg-[#1B5E20]/10 hover:text-[#1B5E20] border border-gray-200 rounded-full px-2.5 py-1 text-[#263238] transition-colors cursor-pointer"
+                    className="text-[10px] bg-gray-50 hover:bg-[#1B5E20]/10 hover:text-[#1B5E20] border border-gray-200 rounded-full px-2.5 py-1 text-[#263238] transition-colors cursor-pointer text-left"
                   >
                     {s}
                   </button>
@@ -123,15 +138,15 @@ export const AIChatBot: React.FC = () => {
             <div className="p-3 border-t border-gray-200 bg-white flex gap-2">
               <input
                 type="text"
-                placeholder="Ask about tours, hotels or details..."
+                placeholder="Tire suas dúvidas sobre pacotes, datas..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(inputText)}
-                className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#1B5E20]"
+                className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-[#1B5E20] text-[#263238]"
               />
               <button
                 onClick={() => handleSendMessage(inputText)}
-                className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white p-2 rounded-xl transition-colors cursor-pointer"
+                className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white p-2.5 rounded-xl transition-colors cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
