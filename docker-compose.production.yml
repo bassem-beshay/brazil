@@ -1,0 +1,103 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    env_file: .env.production
+    volumes:
+      - brazil_postgres_data:/var/lib/postgresql/data
+    networks: [brazil_network]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - brazil_redis_data:/data
+    networks: [brazil_network]
+
+  web:
+    build: ./backend
+    restart: unless-stopped
+    command: /entrypoint.sh
+    env_file: .env.production
+    environment:
+      DATABASE_ENGINE: postgresql
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - brazil_static:/app/staticfiles
+      - brazil_media:/app/media
+    depends_on: [db, redis]
+    networks: [brazil_network]
+
+  daphne:
+    build: ./backend
+    restart: unless-stopped
+    command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    env_file: .env.production
+    environment:
+      DATABASE_ENGINE: postgresql
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    depends_on: [db, redis]
+    networks: [brazil_network]
+
+  celery_worker:
+    build: ./backend
+    restart: unless-stopped
+    command: celery -A config worker --loglevel=info
+    env_file: .env.production
+    environment:
+      DATABASE_ENGINE: postgresql
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    depends_on: [db, redis]
+    networks: [brazil_network]
+
+  celery_beat:
+    build: ./backend
+    restart: unless-stopped
+    command: celery -A config beat --loglevel=info
+    env_file: .env.production
+    environment:
+      DATABASE_ENGINE: postgresql
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    depends_on: [db, redis]
+    networks: [brazil_network]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.production
+      args:
+        NEXT_PUBLIC_API_BASE_URL: /api
+    restart: unless-stopped
+    environment:
+      INTERNAL_API_BASE_URL: http://web:8000/api
+    depends_on: [web]
+    networks: [brazil_network]
+
+  nginx:
+    build: ./nginx
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    volumes:
+      - brazil_static:/app/static:ro
+      - brazil_media:/app/media:ro
+    depends_on: [web, daphne, frontend]
+    networks: [brazil_network]
+
+networks:
+  brazil_network:
+
+volumes:
+  brazil_postgres_data:
+  brazil_redis_data:
+  brazil_static:
+  brazil_media:

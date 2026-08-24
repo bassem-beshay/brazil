@@ -7,9 +7,10 @@ import {
   Clock, Calendar, User, ArrowLeft, Tag, Share2, 
   MessageCircle, Sparkles, CheckCircle2, ChevronRight 
 } from 'lucide-react';
-import { MOCK_BLOG_POSTS, MOCK_TOURS } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function SingleBlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { MOCK_BLOG_POSTS, MOCK_TOURS } = useSiteContent();
   const resolvedParams = use(params);
   const router = useRouter();
 
@@ -19,7 +20,7 @@ export default function SingleBlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Article Header Banner */}
-      <section className="relative h-[55vh] min-h-[400px] bg-[#1A252C] flex items-end overflow-hidden">
+      <section className="relative h-[48vh] min-h-[340px] bg-[#1A252C] flex items-end overflow-hidden">
         <div 
           className="absolute inset-0 opacity-45 bg-cover bg-center"
           style={{ backgroundImage: `url('${post.cover_image}')` }}
@@ -48,7 +49,13 @@ export default function SingleBlogPostPage({ params }: { params: Promise<{ slug:
           </h1>
 
           <div className="flex items-center gap-3">
-            <img src={post.author.avatar} alt={post.author.name} className="w-10 h-10 rounded-full object-cover border border-white/40" />
+            <img
+              src={post.author.avatar}
+              alt={post.author.name}
+              loading="eager"
+              decoding="async"
+              className="w-10 h-10 rounded-full object-cover border border-white/40"
+            />
             <div>
               <span className="text-xs font-bold text-white block">{post.author.name}</span>
               <span className="text-[10px] text-gray-300">{post.author.role} &bull; {post.published_at}</span>
@@ -114,7 +121,16 @@ export default function SingleBlogPostPage({ params }: { params: Promise<{ slug:
               ★ Pacote Recomendado para Este Roteiro
             </span>
             <div className="h-44 rounded-2xl overflow-hidden mb-4">
-              <img src={relatedTour.primary_image} alt={relatedTour.name} className="w-full h-full object-cover" />
+              <img
+                src={relatedTour.primary_image}
+                alt={relatedTour.name}
+                loading="eager"
+                decoding="async"
+                onError={(e) => {
+                  e.currentTarget.src = '/site-assets/02c648d21222bbd8.jpg';
+                }}
+                className="w-full h-full object-cover"
+              />
             </div>
             <h4 className="font-bold text-base text-[#263238] mb-2">{relatedTour.name}</h4>
             <p className="text-xs text-[#546E7A] line-clamp-2 mb-4 font-light">{relatedTour.description}</p>

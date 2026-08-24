@@ -3,36 +3,34 @@
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
 import { 
   Calendar, Compass, ShieldCheck, Heart, Star, 
   Check, X, ArrowLeft, MessageCircle, Sparkles, MapPin, Users 
 } from 'lucide-react';
-import { MOCK_TOURS, TourPackage } from '@/lib/mockData';
+import { TourPackage } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function TourDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { MOCK_TOURS } = useSiteContent();
   const resolvedParams = use(params);
   const router = useRouter();
   
-  // Find from mock or initial state
-  const initialTour = MOCK_TOURS.find(t => t.slug === resolvedParams.slug) || MOCK_TOURS[0];
-  const [tour, setTour] = useState<TourPackage>(initialTour);
+  const findTour = (slug: string) => MOCK_TOURS.find(t => t.slug === slug) || MOCK_TOURS[0];
+  const [tour, setTour] = useState<TourPackage>(findTour(resolvedParams.slug));
   const [wishlisted, setWishlisted] = useState(false);
+  const heroImageBySlug: Record<string, string> = {
+    'viagem-egito-milenar-10-dias-aereo-com-terrestre': '/site-assets/cc25b2eb94a7e175.png',
+    'caminho-de-moises-ii-com-sharm-el-sheikh-11-dias': '/site-assets/be66a3791d60c940.png',
+    'esplendor-das-tres-capitais-milenares': '/site-assets/48afe4e7527c2896.png',
+    'esplendor-do-egito-com-aereo-em-6-de-junho-2025': '/site-assets/026241b0b38575ff.jpg',
+    'viagem-ao-egito-no-carnaval-em-1-de-marco-2025': '/site-assets/2eee2d63670661aa.jpg',
+    'fascino-do-egito-milenar-em-18-de-setembro-2025': '/site-assets/761e921bfc20f100.png',
+  };
+  const heroImage = heroImageBySlug[tour.slug] || tour.primary_image;
 
   useEffect(() => {
-    // Try fetching live tour if available in backend
-    api.get(`/tours/${resolvedParams.slug}/`)
-      .then(res => {
-        if (res.data) {
-          setTour(res.data);
-        }
-      })
-      .catch(() => {
-        // Fallback gracefully to mock data
-        const match = MOCK_TOURS.find(t => t.slug === resolvedParams.slug) || MOCK_TOURS[0];
-        setTour(match);
-      });
-  }, [resolvedParams.slug]);
+    setTour(findTour(resolvedParams.slug));
+  }, [resolvedParams.slug, MOCK_TOURS]);
 
   const handleWishlist = () => {
     setWishlisted(!wishlisted);
@@ -55,10 +53,10 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Luxury Cover Header */}
-      <section className="relative h-[65vh] min-h-[450px] bg-[#1A252C] flex items-end overflow-hidden">
+      <section className="relative h-[54vh] min-h-[380px] bg-[#1A252C] flex items-end overflow-hidden">
         <div 
           className="absolute inset-0 opacity-55 bg-cover bg-center"
-          style={{ backgroundImage: `url('${tour.primary_image}')` }}
+          style={{ backgroundImage: `url('${heroImage}')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-transparent" />
 
@@ -196,7 +194,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
               <div className="space-y-3">
                 {tour.packages && tour.packages.length > 0 ? (
                   tour.packages.map((pkg) => (
-                    <div key={pkg.id} className="border border-gray-100 rounded-2xl p-4 bg-gray-50/70 space-y-2">
+                  <div key={pkg.id} className="border border-gray-100 rounded-2xl p-4 bg-gray-50/70 space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-bold text-[#263238]">{pkg.title}</span>
                         <span className="text-xs font-bold text-[#1B5E20]">${pkg.price_per_person} USD</span>
@@ -211,9 +209,9 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
                           Reservar Data
                         </button>
                       </div>
-                    </div>
-                  ))
-                ) : (
+                  </div>
+                ))
+              ) : (
                   <div className="text-xs text-gray-500 p-4 bg-gray-50 rounded-xl">
                     Saídas sob demanda durante todo o ano.
                   </div>

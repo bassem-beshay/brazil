@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import '@/styles/globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { SiteContentProvider } from '@/context/SiteContentContext';
+import siteData from '@/lib/siteData.generated.json';
 import { Compass, ShoppingBag, Heart, User as UserIcon, MessageCircle, Phone, Award, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -30,6 +32,7 @@ export default function RootLayout({
       </head>
       <body style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }} className="bg-[#F8F9FA] text-[#263238] antialiased">
         <AuthProvider>
+          <SiteContentProvider initialContent={siteData as any}>
           {/* Top Announcement Bar */}
           <div className="bg-[#1B5E20] text-white text-xs py-2 px-6 hidden sm:block">
             <div className="max-w-7xl mx-auto flex justify-between items-center font-medium">
@@ -166,8 +169,8 @@ export default function RootLayout({
                   <li><Link href="/destinations/cairo" className="hover:text-white transition-colors">Cairo & Pirâmides</Link></li>
                   <li><Link href="/destinations/luxor-aswan" className="hover:text-white transition-colors">Cruzeiro no Rio Nilo</Link></li>
                   <li><Link href="/destinations/hurghada" className="hover:text-white transition-colors">Hurghada & Mar Vermelho</Link></li>
-                  <li><Link href="/destinations/rio-de-janeiro" className="hover:text-white transition-colors">Rio de Janeiro & Brasil</Link></li>
-                  <li><Link href="/destinations/egito-jordania-dubai" className="hover:text-white transition-colors">Egito, Jordânia & Dubai</Link></li>
+                  <li><Link href="/destinations/jordania" className="hover:text-white transition-colors">Egito & Jordânia</Link></li>
+                  <li><Link href="/destinations/dubai" className="hover:text-white transition-colors">Dubai & Conexões Internacionais</Link></li>
                   <li><Link href="/destinations" className="text-[#FBC02D] hover:underline transition-colors font-medium">Ver Todos os Destinos &rarr;</Link></li>
                 </ul>
               </div>
@@ -182,6 +185,20 @@ export default function RootLayout({
                   <li><Link href="/faq" className="hover:text-white transition-colors">Perguntas Frequentes (FAQ)</Link></li>
                   <li><Link href="/faq#vistos" className="hover:text-white transition-colors">Informações de Visto</Link></li>
                   <li><Link href="/contact" className="hover:text-white transition-colors">Fale com um Especialista</Link></li>
+                </ul>
+              </div>
+
+              {/* Páginas Institucionais */}
+              <div>
+                <h4 className="font-semibold text-xs mb-5 text-[#FBC02D] uppercase tracking-wider">Páginas do Site</h4>
+                <ul className="space-y-3 text-sm text-[#CFD8DC]">
+                  <li><Link href="/quem-somos" className="hover:text-white transition-colors">Quem Somos</Link></li>
+                  <li><Link href="/nossa-visao" className="hover:text-white transition-colors">Nossa Visão</Link></li>
+                  <li><Link href="/dicas-sobre-egito" className="hover:text-white transition-colors">Dicas Sobre Egito</Link></li>
+                  <li><Link href="/solicitar-pacote-para-grupo" className="hover:text-white transition-colors">Solicitar Pacote Para Grupo</Link></li>
+                  <li><Link href="/regras-e-condicoes-gerais" className="hover:text-white transition-colors">Regras e Condições</Link></li>
+                  <li><Link href="/criar-sua-viagem" className="hover:text-white transition-colors">Criar Sua Viagem</Link></li>
+                  <li><Link href="/cruzeiros-no-nilo" className="hover:text-white transition-colors">Cruzeiros no Nilo</Link></li>
                 </ul>
               </div>
 
@@ -223,6 +240,7 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
+          </SiteContentProvider>
         </AuthProvider>
       </body>
     </html>

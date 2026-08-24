@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, Clock, Calendar, User, ArrowRight, Tag, Search } from 'lucide-react';
-import { MOCK_BLOG_POSTS, BlogPost } from '@/lib/mockData';
+import { BlogPost } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function BlogPage() {
+  const { MOCK_BLOG_POSTS } = useSiteContent();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -33,7 +35,7 @@ export default function BlogPage() {
       <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 opacity-35 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1544885935-98dd03b09034?q=80&w=1600')` }}
+          style={{ backgroundImage: `url('/site-assets/02c648d21222bbd8.jpg')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
@@ -57,6 +59,11 @@ export default function BlogPage() {
             <img 
               src={featuredPost.cover_image} 
               alt={featuredPost.title}
+              loading="eager"
+              decoding="async"
+              onError={(e) => {
+                e.currentTarget.src = '/site-assets/02c648d21222bbd8.jpg';
+              }}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
             />
             <div className="absolute top-4 left-4 bg-[#1B5E20] text-white text-xs font-bold px-3 py-1 rounded-full shadow">
@@ -80,7 +87,7 @@ export default function BlogPage() {
 
             <div className="flex justify-between items-center border-t border-gray-100 pt-4">
               <div className="flex items-center gap-3">
-                <img src={featuredPost.author.avatar} alt={featuredPost.author.name} className="w-9 h-9 rounded-full object-cover" />
+                <img src={featuredPost.author.avatar} alt={featuredPost.author.name} loading="eager" decoding="async" className="w-9 h-9 rounded-full object-cover" />
                 <div>
                   <span className="text-xs font-bold text-[#263238] block">{featuredPost.author.name}</span>
                   <span className="text-[10px] text-gray-400">{featuredPost.published_at}</span>
@@ -140,6 +147,11 @@ export default function BlogPage() {
                   <img 
                     src={post.cover_image} 
                     alt={post.title} 
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      e.currentTarget.src = '/site-assets/02c648d21222bbd8.jpg';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                   />
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full">
@@ -166,7 +178,7 @@ export default function BlogPage() {
 
               <div className="px-6 pb-6 pt-2 border-t border-gray-50 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <img src={post.author.avatar} alt={post.author.name} className="w-7 h-7 rounded-full object-cover" />
+                  <img src={post.author.avatar} alt={post.author.name} loading="lazy" decoding="async" className="w-7 h-7 rounded-full object-cover" />
                   <span className="text-[11px] font-bold text-[#263238]">{post.author.name}</span>
                 </div>
                 <Link 

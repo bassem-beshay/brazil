@@ -8,9 +8,10 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AIChatBot } from '@/components/AIChatBot';
-import { MOCK_DESTINATIONS, MOCK_TOURS, MOCK_REVIEWS } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function HomePage() {
+  const { MOCK_DESTINATIONS, MOCK_TOURS, MOCK_REVIEWS } = useSiteContent();
   const [searchQuery, setSearchQuery] = useState('');
   
   // AI Form states
@@ -57,15 +58,15 @@ export default function HomePage() {
   return (
     <div className="w-full relative bg-[#F8F9FA] pb-20">
       {/* 1. Hero Section */}
-      <section className="relative w-full min-h-[92vh] flex items-center justify-center bg-[#1A252C] overflow-hidden">
+      <section className="relative w-full min-h-[84vh] flex items-center justify-center bg-[#1A252C] overflow-hidden">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 opacity-45 bg-cover bg-center transition-transform duration-1000 scale-105"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1503177112294-7337da2a563d?q=80&w=1800')` }}
+          style={{ backgroundImage: `url('/site-assets/cc25b2eb94a7e175.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
-        <div className="relative max-w-5xl mx-auto px-6 text-center z-10 pt-10">
+        <div className="relative max-w-5xl mx-auto px-6 text-center z-10 pt-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

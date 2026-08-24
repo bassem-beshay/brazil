@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { Calendar, Heart, Bell, User as UserIcon, Loader2, Sparkles, FileText, Compass } from 'lucide-react';
-import { MOCK_TOURS } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function DashboardPage() {
+  const { MOCK_TOURS } = useSiteContent();
   const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
 
@@ -46,7 +47,7 @@ export default function DashboardPage() {
     <div className="max-w-7xl mx-auto px-6 py-12">
       {/* Welcome Banner */}
       <div className="bg-[#1A252C] rounded-3xl p-8 sm:p-10 text-white mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-premium relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1503177112294-7337da2a563d?q=80&w=800')] bg-cover" />
+        <div className="absolute inset-0 opacity-20 bg-[url('/site-assets/2be8e30a696cf708.png')] bg-cover" />
         <div className="relative z-10">
           <div className="flex items-center gap-2 text-[#FBC02D] text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4" /> Portal do Viajante

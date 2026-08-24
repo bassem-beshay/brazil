@@ -47,3 +47,9 @@ Desktop.ini
 # Next.js
 .next/
 coverage/
+
+# Local browser-debug artifacts and visual review captures
+/.playwright-cli/
+/frontend/output/
+/*.png
+/dev.err

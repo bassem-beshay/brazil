@@ -7,13 +7,25 @@ import {
   MapPin, Calendar, Clock, Globe2, Coins, CheckCircle, 
   ArrowRight, Sparkles, MessageCircle, Star, Compass 
 } from 'lucide-react';
-import { MOCK_DESTINATIONS, MOCK_TOURS } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function SingleDestinationPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { MOCK_DESTINATIONS, MOCK_TOURS } = useSiteContent();
   const resolvedParams = use(params);
   const router = useRouter();
 
   const destination = MOCK_DESTINATIONS.find(d => d.slug === resolvedParams.slug) || MOCK_DESTINATIONS[0];
+  const heroImageBySlug: Record<string, string> = {
+    cairo: '/site-assets/cc25b2eb94a7e175.png',
+    'luxor-aswan': '/site-assets/2eee2d63670661aa.jpg',
+    'sharm-el-sheikh': '/site-assets/340eaaf95101bd52.png',
+    hurghada: '/site-assets/fb1a3cc0cf94e9f2.png',
+    alexandria: '/site-assets/67c24c730d8b8a5a.png',
+    siwa: '/site-assets/3b9cb8128b4300d5.png',
+    jordania: '/site-assets/be66a3791d60c940.png',
+    dubai: '/site-assets/beb26a1d728797db.png',
+  };
+  const heroImage = heroImageBySlug[destination.slug] || destination.cover_image;
 
   // Find related tours matching this destination
   const relatedTours = MOCK_TOURS.filter(t => 
@@ -25,10 +37,10 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Hero Section */}
-      <section className="relative h-[65vh] min-h-[450px] bg-[#1A252C] flex items-end overflow-hidden">
+      <section className="relative h-[54vh] min-h-[380px] bg-[#1A252C] flex items-end overflow-hidden">
         <div 
           className="absolute inset-0 opacity-55 bg-cover bg-center"
-          style={{ backgroundImage: `url('${destination.cover_image}')` }}
+          style={{ backgroundImage: `url('${heroImage}')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-transparent" />
 
@@ -125,7 +137,16 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {destination.gallery.map((img, i) => (
                   <div key={i} className="h-52 rounded-2xl overflow-hidden shadow">
-                    <img src={img} alt={`${destination.name} - ${i}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <img
+                      src={img}
+                      alt={`${destination.name} - ${i}`}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        e.currentTarget.src = '/site-assets/cc25b2eb94a7e175.png';
+                      }}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                 ))}
               </div>
@@ -144,7 +165,16 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
                 {relatedTours.map((t) => (
                   <div key={t.id} className="bg-white rounded-3xl p-6 shadow-premium border border-gray-100 flex flex-col sm:flex-row gap-6 items-center">
                     <div className="w-full sm:w-48 h-40 rounded-2xl overflow-hidden shrink-0">
-                      <img src={t.primary_image} alt={t.name} className="w-full h-full object-cover" />
+                      <img
+                        src={t.primary_image}
+                        alt={t.name}
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          e.currentTarget.src = '/site-assets/cc25b2eb94a7e175.png';
+                        }}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">

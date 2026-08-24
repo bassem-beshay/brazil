@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const isServer = typeof window === 'undefined';
-const API_URL = isServer ? 'http://nginx/api' : '/api';
+const API_URL = isServer ? (process.env.INTERNAL_API_BASE_URL || 'http://127.0.0.1:8000/api') : (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/api');
 
 export const api = axios.create({
   baseURL: API_URL,

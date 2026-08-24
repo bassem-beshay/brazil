@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, MapPin, Compass, ArrowRight, Sparkles, Filter } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { MOCK_DESTINATIONS, Destination } from '@/lib/mockData';
+import { Destination } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function DestinationsPage() {
+  const { MOCK_DESTINATIONS } = useSiteContent();
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -26,7 +27,7 @@ export default function DestinationsPage() {
       <section className="relative h-80 bg-[#1A252C] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 opacity-40 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1544885935-98dd03b09034?q=80&w=1600')` }}
+          style={{ backgroundImage: `url('/site-assets/cc25b2eb94a7e175.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
@@ -86,12 +87,9 @@ export default function DestinationsPage() {
       <section className="max-w-7xl mx-auto px-6 mt-12">
         {filteredDestinations.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredDestinations.map((dest, idx) => (
-              <motion.div
+            {filteredDestinations.map((dest) => (
+              <div
                 key={dest.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
               >
                 <Link
                   href={`/destinations/${dest.slug}`}
@@ -103,6 +101,11 @@ export default function DestinationsPage() {
                       <img
                         src={dest.cover_image}
                         alt={dest.name}
+                        loading="eager"
+                        decoding="async"
+                        onError={(e) => {
+                          e.currentTarget.src = '/site-assets/cc25b2eb94a7e175.png';
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute top-4 left-4 bg-[#1B5E20] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
@@ -147,9 +150,9 @@ export default function DestinationsPage() {
                     <span className="text-xs font-bold text-[#1B5E20] group-hover:text-[#2E7D32] flex items-center gap-1">
                       Ver Detalhes <ArrowRight className="w-3.5 h-3.5" />
                     </span>
-                  </div>
-                </Link>
-              </motion.div>
+                    </div>
+                  </Link>
+              </div>
             ))}
           </div>
         ) : (

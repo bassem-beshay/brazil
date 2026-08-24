@@ -1,8 +1,9 @@
-from django.urls import path, include
+﻿from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+
 from .views import (
     AuthorViewSet, BlogViewSet, FAQViewSet, BannerViewSet,
-    PartnerViewSet, SettingsViewSet, PageViewSet, MenuViewSet
+    PartnerViewSet, SettingsViewSet, PageViewSet, MenuViewSet, SiteContentView
 )
 
 router = DefaultRouter()
@@ -16,5 +17,7 @@ router.register(r'pages', PageViewSet, basename='page')
 router.register(r'menus', MenuViewSet, basename='menu')
 
 urlpatterns = [
+    path('site-content', SiteContentView.as_view(), name='site-content-no-slash'),
+    path('site-content/', SiteContentView.as_view(), name='site-content'),
     path('', include(router.urls)),
 ]

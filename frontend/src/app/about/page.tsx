@@ -6,16 +6,17 @@ import {
   Award, ShieldCheck, Users, Globe2, Heart, 
   MapPin, CheckCircle, Star, Phone, MessageCircle, ArrowRight 
 } from 'lucide-react';
-import { MOCK_TEAM, MOCK_REVIEWS, MOCK_OFFICES } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function AboutPage() {
+  const { MOCK_TEAM, MOCK_REVIEWS, MOCK_OFFICES } = useSiteContent();
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Hero Banner */}
       <section className="relative h-[60vh] min-h-[420px] bg-[#1A252C] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 opacity-40 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1503177112294-7337da2a563d?q=80&w=1600')` }}
+          style={{ backgroundImage: `url('/site-assets/026241b0b38575ff.jpg')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
@@ -64,10 +65,10 @@ export default function AboutPage() {
 
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1544885935-98dd03b09034?q=80&w=800" 
+                <img
+                  src="/site-assets/48afe4e7527c2896.png"
                   alt="Cruzeiro no Rio Nilo Girasol"
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-[#1B5E20] text-white p-6 rounded-2xl shadow-xl hidden sm:block max-w-xs">

@@ -6,9 +6,11 @@ import {
   HelpCircle, ChevronDown, Search, MessageCircle, 
   Phone, Mail, ShieldCheck, FileText, CheckCircle2 
 } from 'lucide-react';
-import { MOCK_FAQS, FAQItem } from '@/lib/mockData';
+import { FAQItem } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function FAQPage() {
+  const { MOCK_FAQS } = useSiteContent();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({ 'faq-1': true, 'faq-2': true });
@@ -40,7 +42,7 @@ export default function FAQPage() {
       <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 opacity-35 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1503177112294-7337da2a563d?q=80&w=1600')` }}
+          style={{ backgroundImage: `url('/site-assets/bfd87f9300b1c53f.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 

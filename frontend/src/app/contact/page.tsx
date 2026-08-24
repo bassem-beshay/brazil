@@ -5,9 +5,10 @@ import {
   Phone, Mail, MessageCircle, MapPin, Clock, 
   Send, CheckCircle2, ShieldCheck, Sparkles, HelpCircle 
 } from 'lucide-react';
-import { MOCK_OFFICES } from '@/lib/mockData';
+import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function ContactPage() {
+  const { MOCK_OFFICES } = useSiteContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,7 +39,7 @@ export default function ContactPage() {
       <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 opacity-35 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1503177112294-7337da2a563d?q=80&w=1600')` }}
+          style={{ backgroundImage: `url('/site-assets/7d6b87f2d9b6c89f.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 

@@ -5,6 +5,7 @@ import html
 import json
 import math
 import re
+import unicodedata
 from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -13,7 +14,7 @@ from pathlib import Path
 MONTH_MAP = {
     "janeiro": 1,
     "fevereiro": 2,
-    "marÃ§o": 3,
+    "marco": 3,
     "marco": 3,
     "abril": 4,
     "maio": 5,
@@ -29,7 +30,7 @@ MONTH_MAP = {
 MONTH_NAMES = {
     1: "Janeiro",
     2: "Fevereiro",
-    3: "MarÃ§o",
+    3: "Março",
     4: "Abril",
     5: "Maio",
     6: "Junho",
@@ -59,6 +60,43 @@ SHORTCODE_RE = re.compile(r"\[[^\]]+\]")
 WHITESPACE_RE = re.compile(r"\s+")
 
 
+def repair_mojibake(value: str) -> str:
+    if not value:
+        return value
+    if not any(token in value for token in ("Ã", "Â", "â", "€", "Ÿ")):
+        return value
+    try:
+        repaired = value.encode("latin1").decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return value
+    if repaired.count("�") > value.count("�"):
+        return value
+    return repaired
+
+
+def normalize_text(value: str) -> str:
+    value = repair_mojibake(value)
+    value = html.unescape(value).lower()
+    value = unicodedata.normalize("NFKD", value)
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    return value
+
+
+def slugify_simple(value: str) -> str:
+    value = normalize_text(value)
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    return re.sub(r"-+", "-", value).strip("-")
+
+def repair_structure(value):
+    if isinstance(value, str):
+        return repair_mojibake(value)
+    if isinstance(value, list):
+        return [repair_structure(item) for item in value]
+    if isinstance(value, dict):
+        return {key: repair_structure(val) for key, val in value.items()}
+    return value
+
+
 def html_to_text(value: str | None) -> str:
     if not value:
         return ""
@@ -82,30 +120,6 @@ def text_excerpt(value: str, limit: int = 180) -> str:
     if len(value) <= limit:
         return value
     return value[:limit].rsplit(" ", 1)[0].strip() + "..."
-
-
-def slugify_simple(value: str) -> str:
-    value = value.lower()
-    value = html.unescape(value)
-    replacements = {
-        "Ã£": "a",
-        "Ã¡": "a",
-        "Ã ": "a",
-        "Ã¢": "a",
-        "Ã¤": "a",
-        "Ã©": "e",
-        "Ãª": "e",
-        "Ã­": "i",
-        "Ã³": "o",
-        "Ã´": "o",
-        "Ãµ": "o",
-        "Ãº": "u",
-        "Ã§": "c",
-    }
-    for old, new in replacements.items():
-        value = value.replace(old, new)
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return re.sub(r"-+", "-", value).strip("-")
 
 
 def parse_sql_value(v: str) -> str | None:
@@ -286,7 +300,7 @@ def parse_date_from_title(title: str) -> datetime | None:
     m = re.search(r"(\d{1,2})\s+de\s+([^\d]+?)\s+(\d{4})", title, re.I)
     if m:
         day = int(m.group(1))
-        month_key = re.sub(r"[^a-zà-ÿãõç]+", "", m.group(2).lower())
+        month_key = normalize_text(m.group(2)).replace(" ", "")
         month = MONTH_MAP.get(month_key)
         year = int(m.group(3))
         if month:
@@ -296,7 +310,7 @@ def parse_date_from_title(title: str) -> datetime | None:
         return datetime(int(m.group(3)), int(m.group(2)), int(m.group(1)))
     return None
 def derive_region(title: str) -> str:
-    t = title.lower()
+    t = normalize_text(title)
     if any(k in t for k in ["rio de janeiro", "amaz", "iguacu", "iguassu"]):
         return "america-do-sul"
     if any(k in t for k in ["jord", "dubai", "turquia", "marrocos", "libano", "italia", "abu dhabi"]):
@@ -305,7 +319,7 @@ def derive_region(title: str) -> str:
 
 
 def derive_destination_name(title: str) -> str:
-    t = title.lower()
+    t = normalize_text(title)
     if "alexandria" in t:
         return "Alexandria"
     if "sharm el sheikh" in t:
@@ -325,14 +339,14 @@ def derive_destination_name(title: str) -> str:
     if "dubai" in t:
         return "Dubai"
     if "jord" in t or "petra" in t or "wadi rum" in t:
-        return "JordÃ¢nia"
+        return "Jordânia"
     if "rio de janeiro" in t:
         return "Rio de Janeiro"
     return "Egito"
 
 
 def derive_category(title: str) -> str:
-    t = title.lower()
+    t = normalize_text(title)
     if any(k in t for k in ["natal", "reveillon", "carnaval", "semana santa", "lua de mel"]):
         return "Temporada & Especiais"
     if any(k in t for k in ["sharm", "hurghada", "marsa alam", "sinai"]):
@@ -340,14 +354,14 @@ def derive_category(title: str) -> str:
     if any(k in t for k in ["jord", "dubai", "turquia", "marrocos", "libano", "italia"]):
         return "Multi-Destino"
     if any(k in t for k in ["alexandria", "cairo", "giza", "luxor", "aswan", "nilo", "abu simbel", "dandara", "sakkara"]):
-        return "ClÃ¡ssico & HistÃ³rico"
+        return "Clássico & Histórico"
     if any(k in t for k in ["siwa", "deserto", "mergulho", "balao"]):
-        return "ExperiÃªncias & Aventuras"
+        return "Experiências & Aventuras"
     return "Egito & Cultura"
 
 
 def derive_city_name(title: str) -> str:
-    t = title.lower()
+    t = normalize_text(title)
     names: list[str] = []
     candidates = [
         ("Cairo", ["cairo"]),
@@ -360,10 +374,10 @@ def derive_city_name(title: str) -> str:
         ("Siwa", ["siwa"]),
         ("Petra", ["petra"]),
         ("Dubai", ["dubai"]),
-        ("AmÃ£", ["amÃ£", "amman"]),
+        ("Amã", ["amã", "amman"]),
         ("Rio de Janeiro", ["rio de janeiro"]),
-        ("IguaÃ§u", ["iguacu", "iguassu"]),
-        ("JordÃ¢nia", ["jord"]),
+        ("Iguaçu", ["iguacu", "iguassu"]),
+        ("Jordânia", ["jord"]),
         ("Marrocos", ["marrocos"]),
     ]
     for name, keys in candidates:
@@ -1030,6 +1044,8 @@ def main() -> None:
         "SITE_META": meta,
         "PAGES": pages_data,
     }
+
+    output = repair_structure(output)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(output, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
