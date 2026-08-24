@@ -86,7 +86,7 @@ services:
     build: ./nginx
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8081:80"
+      - "8081:80"
     volumes:
       - brazil_static:/app/static:ro
       - brazil_media:/app/media:ro
