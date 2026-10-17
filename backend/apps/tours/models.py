@@ -5,7 +5,7 @@ from apps.destinations.models import City
 
 class Category(BaseModel):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     icon = models.CharField(max_length=50, help_text="FontAwesome icon class name e.g. fa-hiking")
     description = models.TextField(blank=True, null=True)
 
@@ -22,10 +22,12 @@ class Tour(BaseModel):
         ('hard', 'Hard'),
     )
     
+    source_id = models.CharField(max_length=100, blank=True, default='')
+    display_order = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='tours')
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='tours')
     name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
     duration_days = models.PositiveIntegerField(default=1)
     duration_hours = models.PositiveIntegerField(default=0)
@@ -37,12 +39,18 @@ class Tour(BaseModel):
     itinerary = models.JSONField(default=list, blank=True, help_text="List of itinerary days: [{'day': 1, 'title': '...', 'description': '...'}]")
     
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    reviews_count = models.PositiveIntegerField(default=0)
+    is_multi_destination = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     # SEO configs
     seo_title = models.CharField(max_length=150, blank=True, null=True)
     seo_description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
 
     def __str__(self):
         return self.name

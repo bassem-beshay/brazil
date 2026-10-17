@@ -1,7 +1,6 @@
 ﻿'use client';
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { api } from '@/lib/api';
+import React, { createContext, useContext, useMemo } from 'react';
 import { applyLocalTravelMedia } from '@/lib/contentMedia';
 import type { BlogPost, Destination, FAQItem, OfficeLocation, ReviewItem, TourPackage } from '@/lib/mockData';
 
@@ -46,27 +45,7 @@ export function SiteContentProvider({
   initialContent: SiteContentBundle;
   children: React.ReactNode;
 }) {
-  const [content, setContent] = useState(() => applyLocalTravelMedia(initialContent));
-
-  useEffect(() => {
-    let active = true;
-    api
-      .get('/cms/site-content')
-      .then((response) => {
-        if (active && response.data) {
-          setContent(applyLocalTravelMedia(response.data as SiteContentBundle));
-        }
-      })
-      .catch(() => {
-        // Keep the initial snapshot when backend is not reachable.
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  const value = useMemo(() => content, [content]);
+  const value = useMemo(() => applyLocalTravelMedia(initialContent), [initialContent]);
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;
 }

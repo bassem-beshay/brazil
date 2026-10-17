@@ -1,15 +1,20 @@
-﻿import json
-
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, permissions, status, viewsets
+from rest_framework import filters, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Author, Blog, FAQ, Banner, Partner, Settings, Page, Menu
+from .models import Author, Banner, Blog, FAQ, Menu, Page, Partner, Settings
 from .serializers import (
-    AuthorSerializer, BlogSerializer, FAQSerializer, BannerSerializer,
-    PartnerSerializer, SettingsSerializer, PageSerializer, MenuSerializer
+    AuthorSerializer,
+    BannerSerializer,
+    BlogSerializer,
+    FAQSerializer,
+    MenuSerializer,
+    PageSerializer,
+    PartnerSerializer,
+    SettingsSerializer,
 )
+from .site_content import build_site_content
 
 
 class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
@@ -22,7 +27,7 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all().order_by('-published_at', '-created_at')
     serializer_class = BlogSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['author', 'tags']
+    filterset_fields = ['author']
     search_fields = ['title', 'content']
 
     def get_permissions(self):
@@ -88,20 +93,13 @@ class SiteContentView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        snapshot = Settings.objects.filter(key='site_content_snapshot').first()
-        if not snapshot:
-            return Response({"detail": "Site content snapshot is not available."}, status=status.HTTP_404_NOT_FOUND)
-        try:
-            return Response(json.loads(snapshot.value))
-        except Exception:
-            return Response({"detail": "Stored snapshot is invalid."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(build_site_content())
 
 
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
 
     def get_queryset(self):
-        # Fetch only root menus (parent is None) to start building trees
         if self.action == 'list':
             return Menu.objects.filter(parent=None).order_by('order')
         return Menu.objects.all().order_by('order')

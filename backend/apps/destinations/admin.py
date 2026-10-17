@@ -26,6 +26,7 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'featured')
-    list_filter = ('city__country', 'city', 'featured')
+    list_display = ('name', 'city', 'region', 'starting_price', 'featured', 'display_order')
+    list_filter = ('city__country', 'city', 'region', 'featured')
+    search_fields = ('name', 'tagline', 'description')
     prepopulated_fields = {'slug': ('name',)}

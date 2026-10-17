@@ -16,8 +16,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'city', 'base_price', 'difficulty', 'featured', 'is_active')
-    list_filter = ('category', 'city', 'difficulty', 'featured', 'is_active')
+    list_display = ('name', 'category', 'city', 'base_price', 'average_rating', 'difficulty', 'featured', 'is_active', 'display_order')
+    list_filter = ('category', 'city', 'difficulty', 'is_multi_destination', 'featured', 'is_active')
+    search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [TourImageInline, TourPackageInline]
 

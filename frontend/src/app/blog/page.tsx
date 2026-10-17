@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, Clock, Calendar, User, ArrowRight, Tag, Search } from 'lucide-react';
-import { BlogPost } from '@/lib/mockData';
+import type { BlogPost } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function BlogPage() {

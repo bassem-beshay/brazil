@@ -1,11 +1,12 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import '@/styles/globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 import { SiteContentProvider } from '@/context/SiteContentContext';
-import siteData from '@/lib/siteData.generated.json';
-import { Compass, ShoppingBag, Heart, User as UserIcon, MessageCircle, Phone, Award, ShieldCheck } from 'lucide-react';
+import { getSiteContent } from '@/lib/siteContent';
+import { Heart, User as UserIcon, MessageCircle, Phone, Award, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Girasol Viagens e Turismo | Pacotes de Luxo para o Egito & América do Sul',
@@ -18,11 +19,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export const dynamic = 'force-dynamic';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const siteContent = await getSiteContent();
+
   return (
     <html lang="pt-BR">
       <head>
@@ -32,14 +37,14 @@ export default function RootLayout({
       </head>
       <body style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }} className="bg-[#F8F9FA] text-[#263238] antialiased">
         <AuthProvider>
-          <SiteContentProvider initialContent={siteData as any}>
+          <SiteContentProvider initialContent={siteContent}>
           {/* Top Announcement Bar */}
           <div className="bg-[#1B5E20] text-white text-xs py-2 px-6 hidden sm:block">
             <div className="max-w-7xl mx-auto flex justify-between items-center font-medium">
               <div className="flex items-center gap-6">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#FBC02D]" />
-                  Licença Min. Turismo Egito Nº 2208 A | Membro IATA
+                  Licença Min. Turismo Egito Nº 2208 A | ABAV Nº 0177-CE
                 </span>
                 <span className="hidden md:inline text-white/60">|</span>
                 <span className="hidden md:flex items-center gap-1">
@@ -63,18 +68,15 @@ export default function RootLayout({
           {/* Header Sticky Navigation */}
           <header className="sticky top-0 left-0 right-0 z-50 glass-effect shadow-premium border-b border-gray-100/80">
             <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-              <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <Compass className="w-6 h-6 text-white group-hover:rotate-45 transition-transform duration-300" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-2xl tracking-tight text-[#263238]">
-                    GIRASOL<span className="text-[#1B5E20]">.</span>
-                  </span>
-                  <span className="text-[10px] tracking-widest uppercase font-semibold text-[#1B5E20] -mt-1">
-                    Viagens & Turismo
-                  </span>
-                </div>
+              <Link href="/" className="group shrink-0" aria-label="Girasol Egypt Travel and Tours">
+                <Image
+                  src="/brand/girasol-egypt-logo.png"
+                  alt="Girasol Egypt Travel and Tours"
+                  width={1322}
+                  height={784}
+                  priority
+                  className="h-14 sm:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                />
               </Link>
 
               {/* Navigation Links */}
@@ -140,12 +142,13 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
               {/* Brand Col */}
               <div className="lg:col-span-2 space-y-6">
-                <div className="flex items-center gap-2">
-                  <Compass className="w-7 h-7 text-[#FBC02D]" />
-                  <span className="font-bold text-2xl tracking-tight text-white">
-                    GIRASOL<span className="text-[#FBC02D]">.</span>
-                  </span>
-                </div>
+                <Image
+                  src="/brand/girasol-egypt-logo.png"
+                  alt="Girasol Egypt Travel and Tours"
+                  width={1322}
+                  height={784}
+                  className="h-24 w-auto object-contain object-left"
+                />
                 <p className="text-sm text-[#CFD8DC] leading-relaxed max-w-md">
                   Operadora de turismo receptivo de excelência (DMC). Especialistas em viagens inesquecíveis pelo Egito, cruzeiros no Nilo, Mar Vermelho, Jordânia, Dubai e roteiros de alto padrão na América do Sul com guias fluentes em português.
                 </p>
@@ -154,7 +157,7 @@ export default function RootLayout({
                     <Award className="w-3.5 h-3.5" /> Licença Min. Turismo 2208 A
                   </span>
                   <span className="text-[11px] px-3 py-1.5 rounded-full border border-gray-700 bg-gray-800/80 text-white font-semibold">
-                    IATA Certified
+                    ABAV Nº 0177-CE
                   </span>
                   <span className="text-[11px] px-3 py-1.5 rounded-full border border-gray-700 bg-gray-800/80 text-emerald-400 font-semibold">
                     ★ Trustpilot 4.3/5.0

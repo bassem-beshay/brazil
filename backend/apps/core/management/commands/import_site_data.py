@@ -7,15 +7,19 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.utils import timezone
 from django.utils.text import slugify
 
-from apps.cms.models import Author, Blog, FAQ, Page, Settings
+from apps.cms.models import (
+    Author, Blog, FAQ, Office, Page, Settings, SiteProfile, TeamMember, Testimonial,
+)
 from apps.destinations.models import City, Country, Destination
 from apps.tours.models import Category, Tour, TourImage, TourPackage
 
 
-ROOT_DIR = Path(__file__).resolve().parents[5]
-DEFAULT_SOURCE = ROOT_DIR / 'frontend' / 'src' / 'lib' / 'siteData.generated.json'
+BACKEND_DIR = Path(__file__).resolve().parents[4]
+REPOSITORY_DIR = BACKEND_DIR.parent
+DEFAULT_SOURCE = REPOSITORY_DIR / 'frontend' / 'src' / 'lib' / 'siteData.generated.json'
 
 
 PT_MONTHS = {
@@ -57,7 +61,7 @@ def parse_pt_date(value: str | None) -> datetime | None:
     month = PT_MONTHS.get(m.group(2).lower())
     if not month:
         return None
-    return datetime(int(m.group(3)), month, int(m.group(1)))
+    return timezone.make_aware(datetime(int(m.group(3)), month, int(m.group(1))))
 
 
 def parse_decimal(value: str | int | float | None) -> str:
@@ -98,7 +102,7 @@ def faq_category(value: str | None) -> str:
 
 
 class Command(BaseCommand):
-    help = 'Import WordPress-derived site content into the Django database and store a snapshot in Settings.'
+    help = 'Import WordPress-derived site content into the live Django content tables.'
 
     def add_arguments(self, parser):
         parser.add_argument('--source', default=str(DEFAULT_SOURCE), help='Path to the generated site data JSON.')
@@ -119,6 +123,9 @@ class Command(BaseCommand):
         tours_data = payload.get('MOCK_TOURS', [])
         blogs_data = payload.get('MOCK_BLOG_POSTS', [])
         faqs_data = payload.get('MOCK_FAQS', [])
+        reviews_data = payload.get('MOCK_REVIEWS', [])
+        offices_data = payload.get('MOCK_OFFICES', [])
+        team_data = payload.get('MOCK_TEAM', [])
         pages_data = payload.get('PAGES', [])
         meta = payload.get('SITE_META', {})
 
@@ -133,6 +140,10 @@ class Command(BaseCommand):
             Blog.objects.all().delete()
             Author.objects.all().delete()
             FAQ.objects.all().delete()
+            Testimonial.objects.all().delete()
+            Office.objects.all().delete()
+            TeamMember.objects.all().delete()
+            SiteProfile.objects.all().delete()
             Page.objects.all().delete()
             Settings.objects.filter(key__in=['site_content_snapshot', 'site_meta']).delete()
 
@@ -195,7 +206,7 @@ class Command(BaseCommand):
             category_map[slug] = category
 
         # Tours and packages.
-        for item in tours_data:
+        for tour_order, item in enumerate(tours_data):
             country_name = item.get('country') or 'Egito'
             city_name = item.get('city_name') or item.get('country') or item.get('name') or 'Destination'
             city = get_city(country_name, city_name, item.get('description', ''), item.get('featured', False))
@@ -203,6 +214,8 @@ class Command(BaseCommand):
             tour, _ = Tour.objects.update_or_create(
                 slug=item.get('slug') or slugify(item.get('name') or 'tour'),
                 defaults={
+                    'source_id': clean_text(item.get('id')),
+                    'display_order': tour_order,
                     'category': category,
                     'city': city,
                     'name': clean_text(item.get('name') or 'Tour'),
@@ -215,6 +228,9 @@ class Command(BaseCommand):
                     'exclusions': item.get('exclusions') or [],
                     'itinerary': item.get('itinerary') or [],
                     'base_price': parse_decimal(item.get('base_price')),
+                    'average_rating': parse_decimal(item.get('average_rating')),
+                    'reviews_count': int(item.get('reviews_count') or 0),
+                    'is_multi_destination': bool(item.get('is_multi_destination', False)),
                     'featured': bool(item.get('featured', False)),
                     'is_active': True,
                     'seo_title': clean_text(item.get('name') or ''),
@@ -246,16 +262,27 @@ class Command(BaseCommand):
 
         # Destinations.
         Destination.objects.all().delete()
-        for item in destinations_data:
+        for destination_order, item in enumerate(destinations_data):
             country_name = item.get('country') or 'Egito'
             city_name = item.get('name') or item.get('slug') or 'Destination'
             city = get_city(country_name, city_name, item.get('description', ''), item.get('featured', False))
             Destination.objects.create(
+                source_id=clean_text(item.get('id')),
+                display_order=destination_order,
                 city=city,
                 name=clean_text(item.get('name') or city_name),
                 slug=item.get('slug') or slugify(item.get('name') or city_name),
+                region=clean_text(item.get('region')),
+                tagline=clean_text(item.get('tagline')),
                 description=clean_text(item.get('description') or ''),
                 main_image=media_value(item.get('cover_image') or item.get('gallery', [''])[0] or ''),
+                gallery=item.get('gallery') or [],
+                best_time_to_visit=clean_text(item.get('best_time_to_visit')),
+                ideal_duration=clean_text(item.get('ideal_duration')),
+                language=clean_text(item.get('language')),
+                currency=clean_text(item.get('currency')),
+                highlights=item.get('highlights') or [],
+                starting_price=parse_decimal(item.get('starting_price')),
                 featured=bool(item.get('featured', False)),
             )
 
@@ -263,7 +290,7 @@ class Command(BaseCommand):
         Author.objects.all().delete()
         Blog.objects.all().delete()
         author_map: dict[str, Author] = {}
-        for item in blogs_data:
+        for blog_order, item in enumerate(blogs_data):
             author_data = item.get('author') or {}
             author_name = clean_text(author_data.get('name') or 'Redação Girasol')
             author = author_map.get(author_name)
@@ -277,11 +304,18 @@ class Command(BaseCommand):
             Blog.objects.update_or_create(
                 slug=item.get('slug') or slugify(item.get('title') or 'post'),
                 defaults={
+                    'source_id': clean_text(item.get('id')),
+                    'display_order': blog_order,
                     'author': author,
                     'title': clean_text(item.get('title') or 'Blog Post'),
                     'content': clean_text(item.get('content') or ''),
+                    'excerpt': clean_text(item.get('excerpt') or ''),
+                    'category': clean_text(item.get('category') or ''),
                     'main_image': media_value(item.get('cover_image') or ''),
                     'published_at': parse_pt_date(item.get('published_at')),
+                    'published_label': clean_text(item.get('published_at') or ''),
+                    'read_time': clean_text(item.get('read_time') or ''),
+                    'featured': bool(item.get('featured', False)),
                     'tags': item.get('tags') or [],
                     'seo_title': clean_text(item.get('title') or '')[:150],
                     'seo_description': clean_text(item.get('excerpt') or '')[:250],
@@ -292,6 +326,8 @@ class Command(BaseCommand):
         FAQ.objects.all().delete()
         for idx, item in enumerate(faqs_data):
             FAQ.objects.create(
+                source_id=clean_text(item.get('id')),
+                source_category=clean_text(item.get('category')),
                 question=clean_text(item.get('question') or ''),
                 answer=clean_text(item.get('answer') or ''),
                 category=faq_category(item.get('category')),
@@ -303,21 +339,74 @@ class Command(BaseCommand):
         Page.objects.all().delete()
         for item in pages_data:
             Page.objects.create(
+                source_id=clean_text(item.get('id')),
                 title=clean_text(item.get('title') or ''),
                 slug=item.get('slug') or slugify(item.get('title') or 'page'),
                 content=clean_text(item.get('content') or ''),
                 is_active=bool(item.get('is_active', True)),
             )
 
-        Settings.objects.update_or_create(
-            key='site_content_snapshot',
-            defaults={'value': json.dumps(payload, ensure_ascii=False)},
+        Testimonial.objects.all().delete()
+        for idx, item in enumerate(reviews_data):
+            Testimonial.objects.create(
+                source_id=clean_text(item.get('id')),
+                author=clean_text(item.get('author') or ''),
+                country=clean_text(item.get('country') or ''),
+                rating=int(item.get('rating') or 5),
+                date_label=clean_text(item.get('date') or ''),
+                title=clean_text(item.get('title') or ''),
+                comment=clean_text(item.get('comment') or ''),
+                tour_name=clean_text(item.get('tour_name') or ''),
+                is_active=True,
+                order=idx,
+            )
+
+        Office.objects.all().delete()
+        for idx, item in enumerate(offices_data):
+            Office.objects.create(
+                city=clean_text(item.get('city') or ''),
+                country=clean_text(item.get('country') or ''),
+                address=clean_text(item.get('address') or ''),
+                phone=clean_text(item.get('phone') or ''),
+                email=clean_text(item.get('email') or ''),
+                whatsapp=clean_text(item.get('whatsapp') or ''),
+                hours=clean_text(item.get('hours') or ''),
+                is_headquarters=bool(item.get('is_headquarters', False)),
+                is_active=True,
+                order=idx,
+            )
+
+        TeamMember.objects.all().delete()
+        for idx, item in enumerate(team_data):
+            TeamMember.objects.create(
+                name=clean_text(item.get('name') or ''),
+                role=clean_text(item.get('role') or ''),
+                bio=clean_text(item.get('bio') or ''),
+                image=media_value(item.get('image') or ''),
+                is_active=True,
+                order=idx,
+            )
+
+        SiteProfile.objects.all().delete()
+        SiteProfile.objects.create(
+            siteurl=clean_text(meta.get('siteurl') or ''),
+            blogname=clean_text(meta.get('blogname') or 'Girasol'),
+            blogdescription=clean_text(meta.get('blogdescription') or ''),
+            user_count=int(meta.get('user_count') or 0),
+            post_count=int(meta.get('post_count') or 0),
+            tour_count=int(meta.get('tour_count') or len(tours_data)),
+            blog_count=int(meta.get('blog_count') or len(blogs_data)),
+            page_count=int(meta.get('page_count') or len(pages_data)),
         )
+
+        Settings.objects.filter(key='site_content_snapshot').delete()
         Settings.objects.update_or_create(
             key='site_meta',
             defaults={'value': json.dumps(meta, ensure_ascii=False)},
         )
 
         self.stdout.write(self.style.SUCCESS(
-            f'Imported {len(tours_data)} tours, {len(destinations_data)} destinations, {len(blogs_data)} blog posts, {len(faqs_data)} FAQs, {len(pages_data)} pages.'
+            f'Imported {len(tours_data)} tours, {len(destinations_data)} destinations, '
+            f'{len(blogs_data)} blog posts, {len(faqs_data)} FAQs, {len(pages_data)} pages, '
+            f'{len(offices_data)} offices, {len(team_data)} team members and {len(reviews_data)} testimonials.'
         ))

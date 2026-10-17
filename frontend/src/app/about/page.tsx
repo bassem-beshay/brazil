@@ -48,7 +48,7 @@ export default function AboutPage() {
                 A **Girasol Viagens e Turismo** é uma das principais operadoras de turismo receptivo (Destination Management Company) do Egito, com atuação estendida à Jordânia, Dubai e América do Sul (Brasil).
               </p>
               <p className="text-sm text-[#546E7A] leading-relaxed font-light">
-                Devidamente licenciada pelo **Ministério do Turismo e Antiguidades do Egito (Licença Categoria A - Nº 2208)** e membro atuante da **IATA** e da **Associação Egípcia de Agências de Viagem (ETAA)**, nossa missão é conectar os viajantes à história viva dos faraós com o mais alto nível de conforto, pontualidade e acolhimento humano.
+                Devidamente licenciada pelo Ministério do Turismo e Antiguidades do Egito (Licença Categoria A - Nº 2208), membro da Associação Egípcia de Agências de Viagem (ETAA) e registrada na ABAV sob o Nº 0177-CE, nossa missão é conectar os viajantes à história viva dos faraós com o mais alto nível de conforto, pontualidade e acolhimento humano.
               </p>
 
               <div className="grid grid-cols-2 gap-4 pt-4">

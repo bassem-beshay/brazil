@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, MapPin, Compass, ArrowRight, Sparkles, Filter } from 'lucide-react';
-import { Destination } from '@/lib/mockData';
+import type { Destination } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function DestinationsPage() {

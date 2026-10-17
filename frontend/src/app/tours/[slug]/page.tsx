@@ -7,7 +7,7 @@ import {
   Calendar, Compass, ShieldCheck, Heart, Star, 
   Check, X, ArrowLeft, MessageCircle, Sparkles, MapPin, Users 
 } from 'lucide-react';
-import { TourPackage } from '@/lib/mockData';
+import type { TourPackage } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function TourDetailPage({ params }: { params: Promise<{ slug: string }> }) {

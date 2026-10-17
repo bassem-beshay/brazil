@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { Search, SlidersHorizontal, Eye, Star, ArrowRight, Sparkles } from 'lucide-react';
-import { TourPackage } from '@/lib/mockData';
+import type { TourPackage } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 function TourCatalogContent() {

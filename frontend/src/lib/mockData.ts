@@ -1,5 +1,3 @@
-﻿import siteData from './siteData.generated.json';
-
 export interface Destination {
   id: string;
   name: string;
@@ -34,7 +32,7 @@ export interface TourPackage {
   country: string;
   category: string;
   duration_days: number;
-  difficulty: 'FÃ¡cil' | 'Moderado' | 'Aventura';
+  difficulty: 'Fácil' | 'Moderado' | 'Aventura';
   base_price: string;
   primary_image: string;
   gallery?: string[];
@@ -65,14 +63,11 @@ export interface BlogPost {
   content: string;
   cover_image: string;
   category: string;
-  author: {
-    name: string;
-    role: string;
-    avatar: string;
-  };
+  author: { name: string; role: string; avatar: string };
   published_at: string;
   read_time: string;
   tags: string[];
+  featured?: boolean;
 }
 
 export interface FAQItem {
@@ -103,36 +98,3 @@ export interface OfficeLocation {
   hours: string;
   is_headquarters?: boolean;
 }
-
-export const MOCK_DESTINATIONS = siteData.MOCK_DESTINATIONS as Destination[];
-export const MOCK_TOURS = siteData.MOCK_TOURS as TourPackage[];
-export const MOCK_BLOG_POSTS = siteData.MOCK_BLOG_POSTS as BlogPost[];
-export const MOCK_FAQS = siteData.MOCK_FAQS as FAQItem[];
-export const MOCK_REVIEWS = siteData.MOCK_REVIEWS as ReviewItem[];
-export const MOCK_OFFICES = siteData.MOCK_OFFICES as OfficeLocation[];
-export const MOCK_TEAM = siteData.MOCK_TEAM as Array<{
-  name: string;
-  role: string;
-  bio: string;
-  image: string;
-}>;
-
-export const SITE_META = siteData.SITE_META as {
-  siteurl: string;
-  blogname: string;
-  blogdescription: string;
-  user_count: number;
-  post_count: number;
-  tour_count: number;
-  blog_count: number;
-  page_count: number;
-};
-
-export const PAGES = siteData.PAGES as Array<{
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  is_active: boolean;
-}>;
-

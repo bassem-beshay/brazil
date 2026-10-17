@@ -1,4 +1,4 @@
-import siteData from '@/lib/siteData.generated.json';
+import type { SiteContentBundle } from '@/context/SiteContentContext';
 
 export type SitePage = {
   slug: string;
@@ -13,21 +13,17 @@ export type RelatedTile = {
   image: string;
 };
 
-const { MOCK_DESTINATIONS, MOCK_TOURS } = siteData as any;
+export function getPageBySlug(content: SiteContentBundle, slug: string): SitePage | undefined {
+  return content.PAGES.find((page) => page.slug === slug);
+}
 
-const destinationBySlug = Object.fromEntries(
-  (MOCK_DESTINATIONS || []).map((dest: any) => [dest.slug, dest])
-);
-
-const tourBySlug = Object.fromEntries(
-  (MOCK_TOURS || []).map((tour: any) => [tour.slug, tour])
-);
-
-export const sitePages: SitePage[] = ((siteData as any).PAGES || []) as SitePage[];
-
-export const sitePageBySlug = Object.fromEntries(sitePages.map((page) => [page.slug, page]));
-
-export function getPageMedia(slug: string) {
+export function getPageMedia(content: SiteContentBundle, slug: string) {
+  const destinationBySlug = Object.fromEntries(
+    (content.MOCK_DESTINATIONS || []).map((dest) => [dest.slug, dest])
+  );
+  const tourBySlug = Object.fromEntries(
+    (content.MOCK_TOURS || []).map((tour) => [tour.slug, tour])
+  );
   // The import contains a generic legacy thumbnail for many entries. Keep the
   // database content intact, but use the corresponding local destination media
   // on editorial pages so a Nile, desert or city page never shows an airplane.

@@ -6,7 +6,7 @@ import {
   HelpCircle, ChevronDown, Search, MessageCircle, 
   Phone, Mail, ShieldCheck, FileText, CheckCircle2 
 } from 'lucide-react';
-import { FAQItem } from '@/lib/mockData';
+import type { FAQItem } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 export default function FAQPage() {

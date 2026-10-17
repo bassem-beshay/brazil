@@ -150,7 +150,7 @@ export default function HomePage() {
       {/* 2. Trust Badges Section */}
       <section className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-6 -mt-10 relative z-20">
         {[
-          { icon: Award, title: "Certificação IATA & Min. Turismo", desc: "Agência credenciada sob a Licença Oficial Nº 2208 A no Egito." },
+          { icon: Award, title: "ABAV & Min. Turismo", desc: "Registro ABAV Nº 0177-CE e Licença Oficial Nº 2208 A no Egito." },
           { icon: Shield, title: "Segurança & Conforto VIP", desc: "Traslados privativos em carros modernos, motoristas dedicados e seguro viagem." },
           { icon: Headphones, title: "Atendimento 24h em Português", desc: "Suporte contínuo via WhatsApp antes, durante e após a sua viagem." },
           { icon: Sparkles, title: "Guias Especializados", desc: "Egiptólogos profissionais e apaixonados que falam o seu idioma nativo." }
