@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  HelpCircle, ChevronDown, Search, MessageCircle, 
-  Phone, Mail, ShieldCheck, FileText, CheckCircle2 
+import {
+  HelpCircle, ChevronDown, Search, MessageCircle,
+  Phone, Mail, ShieldCheck, FileText, CheckCircle2
 } from 'lucide-react';
 import type { FAQItem } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
@@ -30,7 +30,7 @@ export default function FAQPage() {
 
   const filteredFAQs = MOCK_FAQS.filter((faq) => {
     const matchesCategory = activeCategory === 'all' || faq.category === activeCategory;
-    const matchesSearch = 
+    const matchesSearch =
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -40,14 +40,14 @@ export default function FAQPage() {
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Hero Header */}
       <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-35 bg-cover bg-center"
           style={{ backgroundImage: `url('/site-assets/bfd87f9300b1c53f.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
-          <span className="text-[#FBC02D] font-bold text-xs uppercase tracking-widest block mb-2">
+          <span className="text-[#F59E0B] font-bold text-xs uppercase tracking-widest block mb-2">
             Central de Ajuda & Informações
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3">
@@ -62,13 +62,13 @@ export default function FAQPage() {
       {/* 2. Search & Category Tabs */}
       <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-20 space-y-6">
         <div className="bg-white rounded-2xl p-4 shadow-premium border border-gray-100 flex items-center gap-3">
-          <Search className="w-5 h-5 text-[#1B5E20] shrink-0" />
-          <input 
-            type="text" 
-            placeholder="Digite sua dúvida (ex: visto, pagamento, cruzeiro, idioma...)" 
+          <Search className="w-5 h-5 text-[#0B4EA2] shrink-0" />
+          <input
+            type="text"
+            placeholder="Digite sua dúvida (ex: visto, pagamento, cruzeiro, idioma...)"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full text-xs sm:text-sm outline-none text-[#263238] placeholder:text-gray-400" 
+            className="w-full text-xs sm:text-sm outline-none text-[#263238] placeholder:text-gray-400"
           />
         </div>
 
@@ -79,7 +79,7 @@ export default function FAQPage() {
               onClick={() => setActiveCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-[#1B5E20] text-white shadow'
+                  ? 'bg-[#0B4EA2] text-white shadow'
                   : 'bg-white text-[#546E7A] hover:bg-gray-50 border border-gray-100'
               }`}
             >
@@ -95,8 +95,8 @@ export default function FAQPage() {
           filteredFAQs.map((faq) => {
             const isOpen = !!openItems[faq.id];
             return (
-              <div 
-                key={faq.id} 
+              <div
+                key={faq.id}
                 className="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden transition-all"
               >
                 <button
@@ -104,10 +104,10 @@ export default function FAQPage() {
                   className="w-full p-6 text-left flex justify-between items-center gap-4 hover:bg-gray-50/50 transition-colors"
                 >
                   <span className="font-bold text-base text-[#263238] flex items-center gap-3">
-                    <HelpCircle className="w-5 h-5 text-[#1B5E20] shrink-0" />
+                    <HelpCircle className="w-5 h-5 text-[#0B4EA2] shrink-0" />
                     {faq.question}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-gray-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#1B5E20]' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-gray-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#0B4EA2]' : ''}`} />
                 </button>
 
                 {isOpen && (
@@ -130,7 +130,7 @@ export default function FAQPage() {
       {/* 4. Still have questions box */}
       <section className="max-w-4xl mx-auto px-6 mt-16">
         <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-premium border border-gray-100 text-center space-y-6">
-          <div className="w-14 h-14 rounded-2xl bg-[#1B5E20]/10 text-[#1B5E20] flex items-center justify-center mx-auto">
+          <div className="w-14 h-14 rounded-2xl bg-[#0B4EA2]/10 text-[#0B4EA2] flex items-center justify-center mx-auto">
             <MessageCircle className="w-7 h-7" />
           </div>
           <div>
@@ -141,17 +141,17 @@ export default function FAQPage() {
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <a 
-              href="https://wa.me/201060873700" 
-              target="_blank" 
+            <a
+              href="https://wa.me/201060873700"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow flex items-center gap-2 transition-all"
             >
               <MessageCircle className="w-4 h-4" /> WhatsApp: +20 106 087 3700
             </a>
-            <Link 
-              href="/contact" 
-              className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-xs px-6 py-3 rounded-xl shadow flex items-center gap-2 transition-all"
+            <Link
+              href="/contact"
+              className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-xs px-6 py-3 rounded-xl shadow flex items-center gap-2 transition-all"
             >
               <Mail className="w-4 h-4" /> Enviar Mensagem por Formulário
             </Link>

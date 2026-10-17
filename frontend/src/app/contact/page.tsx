@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  Phone, Mail, MessageCircle, MapPin, Clock, 
-  Send, CheckCircle2, ShieldCheck, Sparkles, HelpCircle 
+import {
+  Phone, Mail, MessageCircle, MapPin, Clock,
+  Send, CheckCircle2, ShieldCheck, Sparkles, HelpCircle
 } from 'lucide-react';
 import { useSiteContent } from '@/context/SiteContentContext';
 
@@ -37,14 +37,14 @@ export default function ContactPage() {
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Hero Header */}
       <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-35 bg-cover bg-center"
           style={{ backgroundImage: `url('/site-assets/7d6b87f2d9b6c89f.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
-          <span className="text-[#FBC02D] font-bold text-xs uppercase tracking-widest block mb-2">
+          <span className="text-[#F59E0B] font-bold text-xs uppercase tracking-widest block mb-2">
             Atendimento Personalizado &bull; Suporte 24/7
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 font-display">
@@ -62,16 +62,16 @@ export default function ContactPage() {
         <div className="lg:col-span-2 bg-white rounded-3xl p-8 sm:p-12 shadow-premium border border-gray-100" id="orcamento">
           {submitted ? (
             <div className="text-center py-12 space-y-4">
-              <div className="w-16 h-16 bg-[#1B5E20]/10 text-[#1B5E20] rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-[#0B4EA2]/10 text-[#0B4EA2] rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h3 className="text-2xl font-bold text-[#263238]">Solicitação Recebida com Sucesso!</h3>
               <p className="text-sm text-[#546E7A] max-w-md mx-auto leading-relaxed">
                 Muito obrigado, <strong>{formData.name}</strong>. Um de nossos consultores egiptólogos já está analisando suas preferências e entrará em contato via WhatsApp/E-mail em até poucas horas com a proposta personalizada.
               </p>
-              <button 
+              <button
                 onClick={() => setSubmitted(false)}
-                className="bg-[#1B5E20] text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow mt-4"
+                className="bg-[#0B4EA2] text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow mt-4"
               >
                 Enviar Nova Solicitação
               </button>
@@ -79,8 +79,8 @@ export default function ContactPage() {
           ) : (
             <div>
               <div className="mb-8">
-                <div className="flex items-center gap-2 text-[#1B5E20] font-bold text-xs uppercase tracking-wider mb-2">
-                  <Sparkles className="w-4 h-4 text-[#FBC02D]" />
+                <div className="flex items-center gap-2 text-[#0B4EA2] font-bold text-xs uppercase tracking-wider mb-2">
+                  <Sparkles className="w-4 h-4 text-[#F59E0B]" />
                   Planeje Sua Jornada Sem Compromisso
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
@@ -95,25 +95,25 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">Nome Completo *</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       required
                       placeholder="Ex: João da Silva"
                       value={formData.name}
                       onChange={e => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]" 
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
 
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">E-mail *</label>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       required
                       placeholder="Ex: joao@email.com"
                       value={formData.email}
                       onChange={e => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]" 
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
                 </div>
@@ -121,22 +121,22 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">WhatsApp / Telefone com DDI *</label>
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       required
                       placeholder="Ex: +55 (11) 99999-9999"
                       value={formData.phone}
                       onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]" 
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
 
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">Destino de Interesse *</label>
-                    <select 
+                    <select
                       value={formData.destination}
                       onChange={e => setFormData({ ...formData, destination: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     >
                       <option value="Egito Clássico: Cairo & Cruzeiro no Nilo">Egito Clássico: Cairo & Cruzeiro no Nilo (8 Dias)</option>
                       <option value="Egito Completo: Pirâmides, Nilo & Hurghada">Egito Completo: Pirâmides, Nilo & Hurghada (11 Dias)</option>
@@ -150,20 +150,20 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">Data Prevista de Viagem</label>
-                    <input 
-                      type="date" 
+                    <input
+                      type="date"
                       value={formData.travelDate}
                       onChange={e => setFormData({ ...formData, travelDate: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]" 
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
 
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">Adultos</label>
-                    <select 
+                    <select
                       value={formData.adults}
                       onChange={e => setFormData({ ...formData, adults: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     >
                       <option value="1">1 Adulto</option>
                       <option value="2">2 Adultos</option>
@@ -174,12 +174,12 @@ export default function ContactPage() {
 
                   <div>
                     <label className="text-xs font-bold text-[#263238] block mb-1.5">Categoria de Hotéis</label>
-                    <select 
+                    <select
                       value={formData.hotelCategory}
                       onChange={e => setFormData({ ...formData, hotelCategory: e.target.value })}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#1B5E20]"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                     >
-                      <option value="5-estrelas-luxo">5 Estrelas Luxo (Padrão Girasol)</option>
+                      <option value="5-estrelas-luxo">5 Estrelas Luxo (Padrão Girassol)</option>
                       <option value="5-estrelas-ultra">5 Estrelas Ultra-Luxo / Boutique</option>
                       <option value="4-estrelas-superior">4 Estrelas Superior</option>
                     </select>
@@ -188,19 +188,19 @@ export default function ContactPage() {
 
                 <div>
                   <label className="text-xs font-bold text-[#263238] block mb-1.5">Observações ou Pedidos Especiais</label>
-                  <textarea 
+                  <textarea
                     rows={4}
                     placeholder="Conte-nos sobre seus interesses especiais (Ex: voo de balão em Luxor, lua de mel, quartos conjugados, refeições especiais...)"
                     value={formData.notes}
                     onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs sm:text-sm outline-none focus:border-[#1B5E20]"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs sm:text-sm outline-none focus:border-[#0B4EA2]"
                   />
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-sm py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-sm py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? "Enviando Solicitação..." : "Enviar Solicitação de Orçamento"} <Send className="w-4 h-4" />
                 </button>
@@ -212,15 +212,15 @@ export default function ContactPage() {
         {/* Contact Info & Direct Channels (Col-1) */}
         <div className="space-y-8">
           {/* WhatsApp Direct Card */}
-          <div className="bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] rounded-3xl p-8 text-white shadow-premium space-y-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#FBC02D] block">
+          <div className="bg-gradient-to-br from-[#0B4EA2] to-[#073B7A] rounded-3xl p-8 text-white shadow-premium space-y-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#F59E0B] block">
               Atendimento Imediato
             </span>
             <h3 className="text-xl font-bold">Prefere Falar no WhatsApp?</h3>
             <p className="text-xs text-gray-100 font-light leading-relaxed">
               Nossa equipe de plantão está pronta para conversar diretamente com você sobre itinerários e tirar dúvidas em tempo real.
             </p>
-            <a 
+            <a
               href="https://wa.me/201060873700"
               target="_blank"
               rel="noopener noreferrer"
@@ -236,7 +236,7 @@ export default function ContactPage() {
 
             <div className="space-y-4 text-xs text-[#546E7A]">
               <div className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                <Phone className="w-4 h-4 text-[#0B4EA2] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-[#263238] block">Central Telefônica Egito:</span>
                   <span>+20 2 3771 5511 / +20 1227 011 900</span>
@@ -244,15 +244,15 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                <Mail className="w-4 h-4 text-[#0B4EA2] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-[#263238] block">E-mails de Atendimento:</span>
-                  <span>info@girasoltours.com / reservas@girasoltours.com</span>
+                  <span>info@girassolviagens.com / reservas@girassolviagens.com</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Clock className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                <Clock className="w-4 h-4 text-[#0B4EA2] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-[#263238] block">Horário de Funcionamento:</span>
                   <span>Segunda a Sábado: 09h00 às 19h00 (Plantão 24/7)</span>
@@ -274,11 +274,11 @@ export default function ContactPage() {
           {MOCK_OFFICES.map((off, idx) => (
             <div key={idx} className="bg-white p-6 rounded-2xl shadow-premium border border-gray-100 space-y-2">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#1B5E20]" />
+                <MapPin className="w-4 h-4 text-[#0B4EA2]" />
                 <h4 className="font-bold text-sm text-[#263238]">{off.city}</h4>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed">{off.address}</p>
-              <p className="text-xs font-semibold text-[#1B5E20]">{off.phone}</p>
+              <p className="text-xs font-semibold text-[#0B4EA2]">{off.phone}</p>
             </div>
           ))}
         </div>

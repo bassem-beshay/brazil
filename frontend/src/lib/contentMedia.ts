@@ -53,7 +53,13 @@ function galleryFor(primary: string, seed: string) {
 }
 
 function usableImage(image: unknown) {
-  return typeof image === 'string' && image.startsWith('/site-assets/') && image !== LEGACY_AIRPLANE_IMAGE;
+  return typeof image === 'string'
+    && (
+      image.startsWith('/site-assets/')
+      || image.startsWith('/girassol-media/')
+      || image.startsWith('https://www.girassolviagens.com/wp-content/uploads/')
+    )
+    && image !== LEGACY_AIRPLANE_IMAGE;
 }
 
 /**

@@ -6,17 +6,17 @@ export default function TermsPage() {
   return (
     <div className="bg-[#F8F9FA] min-h-screen py-16">
       <div className="max-w-4xl mx-auto px-6">
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-1.5 text-xs text-[#1B5E20] hover:underline font-bold mb-6"
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-xs text-[#0B4EA2] hover:underline font-bold mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Voltar para o Início
         </Link>
 
         <div className="bg-white rounded-3xl p-8 sm:p-14 shadow-premium border border-gray-100 space-y-8 text-[#263238]">
           <div className="border-b border-gray-100 pb-6">
-            <span className="text-xs font-bold text-[#1B5E20] uppercase tracking-wider block mb-1">
-              Girasol Viagens e Turismo Ltd.
+            <span className="text-xs font-bold text-[#0B4EA2] uppercase tracking-wider block mb-1">
+              Girassol Viagens e Turismo Ltd.
             </span>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Termos de Uso & Condições de Reserva
@@ -27,7 +27,7 @@ export default function TermsPage() {
           <section className="space-y-4 text-sm text-[#546E7A] leading-relaxed font-light">
             <h2 className="text-lg font-bold text-[#263238]">1. Introdução e Aceitação</h2>
             <p>
-              Ao solicitar orçamentos, contratar serviços ou efetuar reservas através do portal da **Girasol Viagens e Turismo** (doravante denominada "Girasol"), o cliente declara estar ciente e de acordo com todas as cláusulas e condições gerais estabelecidas neste instrumento.
+              Ao solicitar orçamentos, contratar serviços ou efetuar reservas através do portal da **Girassol Viagens e Turismo** (doravante denominada "Girassol"), o cliente declara estar ciente e de acordo com todas as cláusulas e condições gerais estabelecidas neste instrumento.
             </p>
 
             <h2 className="text-lg font-bold text-[#263238]">2. Confirmação de Reserva e Pagamentos</h2>

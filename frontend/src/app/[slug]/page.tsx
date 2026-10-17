@@ -10,12 +10,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!page) {
     return {
-      title: 'Página não encontrada | Girasol',
+      title: 'Página não encontrada | Girassol',
     };
   }
 
   return {
-    title: `${page.title} | Girasol Viagens e Turismo`,
+    title: `${page.title} | Girassol Viagens e Turismo`,
     description: page.content.slice(0, 160).replace(/\s+/g, ' '),
   };
 }

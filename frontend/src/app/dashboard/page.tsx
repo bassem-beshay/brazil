@@ -36,7 +36,7 @@ export default function DashboardPage() {
   const [notifications, setNotifications] = useState<any[]>([
     {
       id: 'n-1',
-      title: 'Bem-vindo à Girasol Viagens!',
+      title: 'Bem-vindo à Girassol Viagens!',
       message: 'Seu cadastro foi realizado com sucesso. Explore nossos cruzeiros no Nilo e solicite orçamentos exclusivos.',
       read: false
     }
@@ -49,7 +49,7 @@ export default function DashboardPage() {
       <div className="bg-[#1A252C] rounded-3xl p-8 sm:p-10 text-white mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-premium relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[url('/site-assets/2be8e30a696cf708.png')] bg-cover" />
         <div className="relative z-10">
-          <div className="flex items-center gap-2 text-[#FBC02D] text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-[#F59E0B] text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4" /> Portal do Viajante
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
@@ -58,7 +58,7 @@ export default function DashboardPage() {
           <p className="text-xs text-gray-300 font-light mt-1">Gerencie suas reservas, itinerários salvos e orçamentos personalizados.</p>
         </div>
 
-        <button 
+        <button
           onClick={() => {
             logout();
             router.push('/');
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100">
             <h2 className="text-lg font-bold text-[#263238] mb-6 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#1B5E20]" /> Minhas Reservas & Viagens
+              <Calendar className="w-5 h-5 text-[#0B4EA2]" /> Minhas Reservas & Viagens
             </h2>
 
             <div className="space-y-4">
@@ -84,7 +84,7 @@ export default function DashboardPage() {
                     <div>
                       <div className="flex items-center gap-2.5 mb-1.5">
                         <span className="font-bold text-sm text-[#263238] uppercase">Ref: {b.booking_reference}</span>
-                        <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase bg-[#1B5E20]/10 text-[#1B5E20]">
+                        <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase bg-[#0B4EA2]/10 text-[#0B4EA2]">
                           {b.status}
                         </span>
                       </div>
@@ -95,11 +95,11 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t border-gray-100 md:border-0 pt-3 md:pt-0">
                       <div>
                         <span className="text-[10px] text-gray-400 block">Total</span>
-                        <span className="font-bold text-base text-[#1B5E20]">${b.grand_total} USD</span>
+                        <span className="font-bold text-base text-[#0B4EA2]">${b.grand_total} USD</span>
                       </div>
-                      <Link 
-                        href="/contact" 
-                        className="bg-white border border-gray-200 hover:border-[#1B5E20] text-xs font-semibold px-4 py-2 rounded-xl text-[#263238] hover:text-[#1B5E20] transition-colors"
+                      <Link
+                        href="/contact"
+                        className="bg-white border border-gray-200 hover:border-[#0B4EA2] text-xs font-semibold px-4 py-2 rounded-xl text-[#263238] hover:text-[#0B4EA2] transition-colors"
                       >
                         Suporte VIP
                       </Link>
@@ -121,13 +121,13 @@ export default function DashboardPage() {
           <div className="bg-white rounded-3xl p-6 shadow-premium border border-gray-100">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-sm text-[#263238] flex items-center gap-2">
-                <Bell className="w-4 h-4 text-[#1B5E20]" /> Avisos & Notificações
+                <Bell className="w-4 h-4 text-[#0B4EA2]" /> Avisos & Notificações
               </h3>
             </div>
 
             <div className="space-y-3">
               {notifications.map(n => (
-                <div key={n.id} className="p-3.5 rounded-2xl text-xs bg-[#1B5E20]/5 border border-[#1B5E20]/10">
+                <div key={n.id} className="p-3.5 rounded-2xl text-xs bg-[#0B4EA2]/5 border border-[#0B4EA2]/10">
                   <h4 className="font-bold text-[#263238] mb-1">{n.title}</h4>
                   <p className="text-[11px] text-gray-500 leading-relaxed font-light">{n.message}</p>
                 </div>
@@ -138,18 +138,18 @@ export default function DashboardPage() {
           {/* Wishlists Panel */}
           <div className="bg-white rounded-3xl p-6 shadow-premium border border-gray-100">
             <h3 className="font-bold text-sm text-[#263238] mb-6 flex items-center gap-2">
-              <Heart className="w-4 h-4 text-[#1B5E20]" /> Roteiros Salvos
+              <Heart className="w-4 h-4 text-[#0B4EA2]" /> Roteiros Salvos
             </h3>
 
             <div className="space-y-3">
               {wishlist.map(w => (
-                <Link 
-                  href={`/tours/${w.tour_detail.slug}`} 
-                  key={w.id} 
+                <Link
+                  href={`/tours/${w.tour_detail.slug}`}
+                  key={w.id}
                   className="border border-gray-100 rounded-2xl p-3.5 bg-gray-50/50 hover:bg-gray-50 transition-colors block"
                 >
                   <h4 className="font-bold text-xs text-[#263238] mb-1 line-clamp-1">{w.tour_detail.name}</h4>
-                  <span className="text-[11px] text-[#1B5E20] font-bold">${w.tour_detail.base_price} USD</span>
+                  <span className="text-[11px] text-[#0B4EA2] font-bold">${w.tour_detail.base_price} USD</span>
                 </Link>
               ))}
             </div>

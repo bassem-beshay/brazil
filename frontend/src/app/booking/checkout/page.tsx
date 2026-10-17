@@ -129,7 +129,7 @@ export default function CheckoutPage() {
         ].map((s) => (
           <div key={s.num} className="flex items-center gap-2">
             <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
-              step === s.num ? 'bg-[#1B5E20] text-white' : 'bg-gray-100 text-gray-500'
+              step === s.num ? 'bg-[#0B4EA2] text-white' : 'bg-gray-100 text-gray-500'
             }`}>
               {s.num}
             </span>
@@ -152,74 +152,74 @@ export default function CheckoutPage() {
           >
             <div className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100 space-y-6">
               <h2 className="text-xl font-bold text-[#263238] flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-[#1B5E20]" /> Dados dos Viajantes
+                <UserPlus className="w-5 h-5 text-[#0B4EA2]" /> Dados dos Viajantes
               </h2>
 
               {travelers.map((t, idx) => (
                 <div key={idx} className="border-t border-gray-100 pt-6 first:border-0 first:pt-0 space-y-4">
-                  <h3 className="text-xs font-bold text-[#1B5E20] uppercase">Passageiro #{idx + 1}</h3>
+                  <h3 className="text-xs font-bold text-[#0B4EA2] uppercase">Passageiro #{idx + 1}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">Nome</label>
-                      <input 
-                        type="text" 
-                        required 
+                      <input
+                        type="text"
+                        required
                         placeholder="Ex: Carlos"
-                        value={t.first_name} 
-                        onChange={e => handleFieldChange(idx, 'first_name', e.target.value)} 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        value={t.first_name}
+                        onChange={e => handleFieldChange(idx, 'first_name', e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">Sobrenome</label>
-                      <input 
-                        type="text" 
-                        required 
+                      <input
+                        type="text"
+                        required
                         placeholder="Ex: Mendes"
-                        value={t.last_name} 
-                        onChange={e => handleFieldChange(idx, 'last_name', e.target.value)} 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        value={t.last_name}
+                        onChange={e => handleFieldChange(idx, 'last_name', e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">E-mail</label>
-                      <input 
-                        type="email" 
-                        required 
+                      <input
+                        type="email"
+                        required
                         placeholder="carlos@email.com"
-                        value={t.email} 
-                        onChange={e => handleFieldChange(idx, 'email', e.target.value)} 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        value={t.email}
+                        onChange={e => handleFieldChange(idx, 'email', e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">Nº do Passaporte</label>
-                      <input 
-                        type="text" 
-                        required 
+                      <input
+                        type="text"
+                        required
                         placeholder="Ex: FP123456"
-                        value={t.passport_number} 
-                        onChange={e => handleFieldChange(idx, 'passport_number', e.target.value)} 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        value={t.passport_number}
+                        onChange={e => handleFieldChange(idx, 'passport_number', e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                   </div>
                 </div>
               ))}
 
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={handleAddTraveler}
-                className="text-xs font-bold text-[#1B5E20] hover:text-[#2E7D32] transition-colors"
+                className="text-xs font-bold text-[#0B4EA2] hover:text-[#073B7A] transition-colors"
               >
                 + Adicionar Outro Passageiro
               </button>
             </div>
 
             <div className="flex justify-end">
-              <button 
+              <button
                 onClick={() => setStep(2)}
-                className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-xs px-8 py-3.5 rounded-xl flex items-center gap-2 transition-all shadow cursor-pointer"
+                className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-xs px-8 py-3.5 rounded-xl flex items-center gap-2 transition-all shadow cursor-pointer"
               >
                 Prosseguir para o Pagamento <ArrowRight className="w-4 h-4" />
               </button>
@@ -240,45 +240,45 @@ export default function CheckoutPage() {
             <form onSubmit={executeCheckout} className="md:col-span-2 space-y-8">
               <div className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100 space-y-6">
                 <h2 className="text-xl font-bold text-[#263238] flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-[#1B5E20]" /> Pagamento Seguro
+                  <CreditCard className="w-5 h-5 text-[#0B4EA2]" /> Pagamento Seguro
                 </h2>
 
                 <div className="space-y-4">
                   <div>
                     <label className="text-xs font-semibold text-gray-600 mb-1 block">Nome no Cartão</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="Como impresso no cartão"
-                      required 
-                      className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                      required
+                      className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-gray-600 mb-1 block">Número do Cartão</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="4532 •••• •••• 8892"
-                      required 
-                      className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                      required
+                      className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">Validade (MM/AA)</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         placeholder="12/28"
-                        required 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        required
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-gray-600 mb-1 block">CVV</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         placeholder="123"
-                        required 
-                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20]"
+                        required
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2]"
                       />
                     </div>
                   </div>
@@ -286,17 +286,17 @@ export default function CheckoutPage() {
               </div>
 
               <div className="flex justify-between items-center">
-                <button 
-                  type="button" 
-                  onClick={() => setStep(1)} 
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
                   className="text-xs font-semibold text-[#546E7A] hover:text-[#263238] transition-colors"
                 >
                   &larr; Voltar aos Passageiros
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={loading}
-                  className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-xs px-8 py-3.5 rounded-xl transition-all shadow cursor-pointer"
+                  className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-xs px-8 py-3.5 rounded-xl transition-all shadow cursor-pointer"
                 >
                   {loading ? "Processando Reserva..." : `Pagar $${computedGrandTotal.toFixed(2)} USD`}
                 </button>
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
             {/* Bill Summary Sidebar */}
             <div className="bg-white rounded-3xl p-6 shadow-premium border border-gray-100 h-fit space-y-6">
               <h3 className="font-bold text-sm text-[#263238] border-b border-gray-100 pb-3">Resumo da Reserva</h3>
-              
+
               <div className="space-y-2 text-xs leading-relaxed text-gray-600">
                 <div className="flex justify-between">
                   <span>Pacote:</span>
@@ -334,7 +334,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between border-t border-gray-100 pt-3 text-sm font-bold text-[#263238]">
                   <span>Total Geral:</span>
-                  <span className="text-[#1B5E20]">${computedGrandTotal.toFixed(2)} USD</span>
+                  <span className="text-[#0B4EA2]">${computedGrandTotal.toFixed(2)} USD</span>
                 </div>
               </div>
             </div>
@@ -349,7 +349,7 @@ export default function CheckoutPage() {
             key="step3"
             className="max-w-md mx-auto bg-white rounded-3xl p-8 shadow-premium border border-gray-100 text-center space-y-6"
           >
-            <CheckCircle className="w-16 h-16 text-[#1B5E20] mx-auto animate-bounce" />
+            <CheckCircle className="w-16 h-16 text-[#0B4EA2] mx-auto animate-bounce" />
             <h2 className="text-2xl font-bold text-[#263238]">Reserva Confirmada com Sucesso!</h2>
             <p className="text-xs text-[#546E7A] leading-relaxed">
               Sua reserva foi registrada em nossos sistemas. Enviamos a confirmação e os vouchers para seu e-mail.
@@ -358,7 +358,7 @@ export default function CheckoutPage() {
             <div className="bg-gray-50 rounded-2xl p-4 text-xs text-left space-y-2 border border-gray-100">
               <div className="flex justify-between">
                 <span className="text-gray-500">Código de Reserva:</span>
-                <span className="font-bold text-[#1B5E20] uppercase">{bookingRef}</span>
+                <span className="font-bold text-[#0B4EA2] uppercase">{bookingRef}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Status:</span>
@@ -366,12 +366,12 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => {
                 localStorage.removeItem('checkout_package');
                 router.push('/');
-              }} 
-              className="w-full bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-xs py-3.5 rounded-xl shadow transition-colors"
+              }}
+              className="w-full bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-xs py-3.5 rounded-xl shadow transition-colors"
             >
               Voltar para a Página Inicial
             </button>

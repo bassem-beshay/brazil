@@ -13,7 +13,7 @@ export default function DestinationsPage() {
 
   const filteredDestinations = MOCK_DESTINATIONS.filter((dest) => {
     const matchesRegion = selectedRegion === 'all' || dest.region === selectedRegion;
-    const matchesSearch = 
+    const matchesSearch =
       dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dest.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dest.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -25,14 +25,14 @@ export default function DestinationsPage() {
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* Hero Header */}
       <section className="relative h-80 bg-[#1A252C] flex items-center justify-center overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-40 bg-cover bg-center"
           style={{ backgroundImage: `url('/site-assets/cc25b2eb94a7e175.png')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
-          <span className="text-[#FBC02D] font-bold text-xs uppercase tracking-widest block mb-3">
+          <span className="text-[#F59E0B] font-bold text-xs uppercase tracking-widest block mb-3">
             Exploração Sem Limites
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
@@ -60,7 +60,7 @@ export default function DestinationsPage() {
                 onClick={() => setSelectedRegion(tab.id)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   selectedRegion === tab.id
-                    ? 'bg-[#1B5E20] text-white shadow-md'
+                    ? 'bg-[#0B4EA2] text-white shadow-md'
                     : 'bg-gray-50 text-[#546E7A] hover:bg-gray-100'
                 }`}
               >
@@ -71,7 +71,7 @@ export default function DestinationsPage() {
 
           {/* Search Input */}
           <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 w-full md:w-72">
-            <Search className="w-4 h-4 text-[#1B5E20]" />
+            <Search className="w-4 h-4 text-[#0B4EA2]" />
             <input
               type="text"
               placeholder="Buscar destino ou atração..."
@@ -108,18 +108,18 @@ export default function DestinationsPage() {
                         }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
-                      <div className="absolute top-4 left-4 bg-[#1B5E20] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
+                      <div className="absolute top-4 left-4 bg-[#0B4EA2] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
                         {dest.country}
                       </div>
                       <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md rounded-xl p-2.5 text-white text-xs">
-                        <span className="font-bold text-[#FBC02D] block mb-0.5">Duração recomendada:</span>
+                        <span className="font-bold text-[#F59E0B] block mb-0.5">Duração recomendada:</span>
                         <span>{dest.ideal_duration}</span>
                       </div>
                     </div>
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3 className="font-bold text-xl text-[#263238] group-hover:text-[#1B5E20] transition-colors mb-2">
+                      <h3 className="font-bold text-xl text-[#263238] group-hover:text-[#0B4EA2] transition-colors mb-2">
                         {dest.name}
                       </h3>
                       <p className="text-xs text-[#546E7A] leading-relaxed mb-4 line-clamp-2 font-light">
@@ -128,12 +128,12 @@ export default function DestinationsPage() {
 
                       {/* Highlights */}
                       <div className="space-y-1.5 mb-6">
-                        <span className="text-[11px] font-bold text-[#1B5E20] uppercase tracking-wider block">
+                        <span className="text-[11px] font-bold text-[#0B4EA2] uppercase tracking-wider block">
                           Principais Destaques:
                         </span>
                         {dest.highlights.slice(0, 3).map((h, i) => (
                           <div key={i} className="text-xs text-[#546E7A] flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#FBC02D]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
                             <span className="line-clamp-1">{h}</span>
                           </div>
                         ))}
@@ -145,9 +145,9 @@ export default function DestinationsPage() {
                   <div className="px-6 pb-6 pt-3 border-t border-gray-50 flex justify-between items-center">
                     <div>
                       <span className="text-[10px] text-gray-400 block">Roteiros a partir de</span>
-                      <span className="font-bold text-lg text-[#1B5E20]">${dest.starting_price} <span className="text-[10px] font-normal text-gray-500">USD</span></span>
+                      <span className="font-bold text-lg text-[#0B4EA2]">${dest.starting_price} <span className="text-[10px] font-normal text-gray-500">USD</span></span>
                     </div>
-                    <span className="text-xs font-bold text-[#1B5E20] group-hover:text-[#2E7D32] flex items-center gap-1">
+                    <span className="text-xs font-bold text-[#0B4EA2] group-hover:text-[#073B7A] flex items-center gap-1">
                       Ver Detalhes <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                     </div>
@@ -164,7 +164,7 @@ export default function DestinationsPage() {
             </p>
             <button
               onClick={() => { setSelectedRegion('all'); setSearchQuery(''); }}
-              className="bg-[#1B5E20] text-white text-xs font-bold px-6 py-2.5 rounded-xl"
+              className="bg-[#0B4EA2] text-white text-xs font-bold px-6 py-2.5 rounded-xl"
             >
               Limpar Filtros
             </button>

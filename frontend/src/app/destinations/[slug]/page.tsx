@@ -3,9 +3,9 @@
 import React, { use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { 
-  MapPin, Calendar, Clock, Globe2, Coins, CheckCircle, 
-  ArrowRight, Sparkles, MessageCircle, Star, Compass 
+import {
+  MapPin, Calendar, Clock, Globe2, Coins, CheckCircle,
+  ArrowRight, Sparkles, MessageCircle, Star, Compass
 } from 'lucide-react';
 import { useSiteContent } from '@/context/SiteContentContext';
 
@@ -28,7 +28,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
   const heroImage = heroImageBySlug[destination.slug] || destination.cover_image;
 
   // Find related tours matching this destination
-  const relatedTours = MOCK_TOURS.filter(t => 
+  const relatedTours = MOCK_TOURS.filter(t =>
     t.city_name.toLowerCase().includes(destination.name.toLowerCase()) ||
     t.country.toLowerCase().includes(destination.country.toLowerCase()) ||
     (destination.region === 'multi-destino' && t.is_multi_destination)
@@ -38,7 +38,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Hero Section */}
       <section className="relative h-[54vh] min-h-[380px] bg-[#1A252C] flex items-end overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-55 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroImage}')` }}
         />
@@ -46,11 +46,11 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pb-12 w-full text-white">
           <div className="flex items-center gap-2 mb-3">
-            <span className="bg-[#1B5E20] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-[#0B4EA2] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
               {destination.country}
             </span>
-            <span className="text-[#FBC02D] text-xs font-semibold">
-              ★ Destino Certificado Girasol
+            <span className="text-[#F59E0B] text-xs font-semibold">
+              ★ Destino Certificado Girassol
             </span>
           </div>
 
@@ -67,7 +67,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
       <section className="max-w-7xl mx-auto px-6 -mt-8 relative z-20">
         <div className="bg-white rounded-2xl p-6 shadow-premium border border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-[#1B5E20]/10 text-[#1B5E20] flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-[#0B4EA2]/10 text-[#0B4EA2] flex items-center justify-center shrink-0">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
@@ -77,7 +77,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-[#1B5E20]/10 text-[#1B5E20] flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-[#0B4EA2]/10 text-[#0B4EA2] flex items-center justify-center shrink-0">
               <Clock className="w-5 h-5" />
             </div>
             <div>
@@ -87,7 +87,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-[#1B5E20]/10 text-[#1B5E20] flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-[#0B4EA2]/10 text-[#0B4EA2] flex items-center justify-center shrink-0">
               <Globe2 className="w-5 h-5" />
             </div>
             <div>
@@ -97,7 +97,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-[#1B5E20]/10 text-[#1B5E20] flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-[#0B4EA2]/10 text-[#0B4EA2] flex items-center justify-center shrink-0">
               <Coins className="w-5 h-5" />
             </div>
             <div>
@@ -123,7 +123,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {destination.highlights.map((h, i) => (
                 <div key={i} className="flex items-start gap-2.5 bg-gray-50 p-3.5 rounded-xl border border-gray-100">
-                  <CheckCircle className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                  <CheckCircle className="w-4 h-4 text-[#0B4EA2] shrink-0 mt-0.5" />
                   <span className="text-xs text-[#263238] font-medium leading-tight">{h}</span>
                 </div>
               ))}
@@ -157,7 +157,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
           <section className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-[#263238]">Pacotes Disponíveis para {destination.name}</h2>
-              <Link href="/tours" className="text-xs font-bold text-[#1B5E20] hover:underline">Ver Todos</Link>
+              <Link href="/tours" className="text-xs font-bold text-[#0B4EA2] hover:underline">Ver Todos</Link>
             </div>
 
             {relatedTours.length > 0 ? (
@@ -178,21 +178,21 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold uppercase text-[#1B5E20]">{t.category}</span>
+                        <span className="text-[10px] font-bold uppercase text-[#0B4EA2]">{t.category}</span>
                         <span className="text-gray-400">&bull;</span>
                         <span className="text-[10px] text-gray-500 font-medium">{t.duration_days} Dias</span>
                       </div>
                       <h3 className="font-bold text-lg text-[#263238] mb-2">{t.name}</h3>
                       <p className="text-xs text-[#546E7A] line-clamp-2 mb-4 font-light">{t.description}</p>
-                      
+
                       <div className="flex justify-between items-center">
                         <div>
                           <span className="text-[10px] text-gray-400 block">Preço base</span>
-                          <span className="font-bold text-lg text-[#1B5E20]">${t.base_price} USD</span>
+                          <span className="font-bold text-lg text-[#0B4EA2]">${t.base_price} USD</span>
                         </div>
-                        <Link 
-                          href={`/tours/${t.slug}`} 
-                          className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow"
+                        <Link
+                          href={`/tours/${t.slug}`}
+                          className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow"
                         >
                           Ver Roteiro Completo
                         </Link>
@@ -204,7 +204,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
             ) : (
               <div className="bg-white rounded-3xl p-8 text-center border border-gray-100">
                 <p className="text-xs text-gray-500 mb-4">Novas saídas programadas estão sendo publicadas para este destino.</p>
-                <Link href="/contact" className="bg-[#1B5E20] text-white text-xs font-bold px-6 py-2.5 rounded-xl inline-block">
+                <Link href="/contact" className="bg-[#0B4EA2] text-white text-xs font-bold px-6 py-2.5 rounded-xl inline-block">
                   Solicitar Roteiro Sob Medida
                 </Link>
               </div>
@@ -216,7 +216,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
         <div className="space-y-8">
           <div className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100 sticky top-24 space-y-6">
             <div>
-              <span className="text-xs font-bold text-[#1B5E20] uppercase tracking-wider block mb-1">
+              <span className="text-xs font-bold text-[#0B4EA2] uppercase tracking-wider block mb-1">
                 Consultoria Especializada
               </span>
               <h3 className="text-xl font-bold text-[#263238]">Quer Conhecer {destination.name}?</h3>
@@ -228,7 +228,7 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
             <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-2 text-xs text-[#263238]">
               <div className="flex justify-between">
                 <span className="text-gray-500">Pacotes a partir de:</span>
-                <span className="font-bold text-[#1B5E20]">${destination.starting_price} USD</span>
+                <span className="font-bold text-[#0B4EA2]">${destination.starting_price} USD</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Guias privativos:</span>
@@ -241,15 +241,15 @@ export default function SingleDestinationPage({ params }: { params: Promise<{ sl
             </div>
 
             <div className="space-y-3">
-              <Link 
+              <Link
                 href="/contact#orcamento"
-                className="w-full bg-[#1B5E20] hover:bg-[#2E7D32] text-white font-bold text-xs py-3.5 rounded-xl block text-center shadow transition-all"
+                className="w-full bg-[#0B4EA2] hover:bg-[#073B7A] text-white font-bold text-xs py-3.5 rounded-xl block text-center shadow transition-all"
               >
                 Solicitar Orçamento Grátis
               </Link>
-              <a 
-                href="https://wa.me/201060873700" 
-                target="_blank" 
+              <a
+                href="https://wa.me/201060873700"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-xs py-3.5 rounded-xl flex items-center justify-center gap-2 shadow transition-all"
               >

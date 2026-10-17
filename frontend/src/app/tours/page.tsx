@@ -1,24 +1,27 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, Eye, Star, ArrowRight, Sparkles } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { Search, SlidersHorizontal, Eye, Star, ArrowRight } from 'lucide-react';
 import type { TourPackage } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
 
 function TourCatalogContent() {
   const { MOCK_TOURS } = useSiteContent();
+  const searchParams = useSearchParams();
   const [tours, setTours] = useState<TourPackage[]>(MOCK_TOURS);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [category, setCategory] = useState('');
-  const [priceMax, setPriceMax] = useState('6000');
+  const [priceMax, setPriceMax] = useState('5000');
+  const categories = useMemo(() => [...new Set(MOCK_TOURS.map((tour) => tour.category))], [MOCK_TOURS]);
 
   const filterTours = () => {
     let result = MOCK_TOURS;
     if (search.trim()) {
       const q = search.toLowerCase();
-      result = result.filter(t => 
-        t.name.toLowerCase().includes(q) || 
+      result = result.filter(t =>
+        t.name.toLowerCase().includes(q) ||
         t.city_name.toLowerCase().includes(q) ||
         t.country.toLowerCase().includes(q) ||
         t.description.toLowerCase().includes(q)
@@ -29,8 +32,8 @@ function TourCatalogContent() {
     }
     if (priceMax) {
       result = result.filter(t => {
-        const num = parseFloat(t.base_price.replace('.', '').replace(',', '.'));
-        return num <= parseFloat(priceMax);
+        const num = Number(t.base_price.replace(',', '.'));
+        return num === 0 || num <= Number(priceMax);
       });
     }
     setTours(result);
@@ -43,22 +46,22 @@ function TourCatalogContent() {
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* Header Banner */}
-      <section className="relative h-72 bg-[#1A252C] flex items-center justify-center overflow-hidden">
-        <div 
+      <section className="relative h-72 bg-[#082F5B] flex items-center justify-center overflow-hidden">
+        <div
           className="absolute inset-0 opacity-35 bg-cover bg-center"
-          style={{ backgroundImage: `url('/site-assets/2eee2d63670661aa.jpg')` }}
+          style={{ backgroundImage: `url('${MOCK_TOURS[0]?.primary_image || '/site-assets/2eee2d63670661aa.jpg'}')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#061D36] via-[#082F5B]/60 to-black/60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
-          <span className="text-[#FBC02D] font-bold text-xs uppercase tracking-widest block mb-2">
-            Catálogo de Roteiros Exclusivos
+          <span className="text-[#F59E0B] font-bold text-xs uppercase tracking-widest block mb-2">
+            Catálogo Completo de Roteiros
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 font-display">
-            Pacotes de Viagem & Cruzeiros no Nilo
+            Pacotes de Viagem pelo Mundo
           </h1>
           <p className="text-gray-200 text-xs sm:text-sm max-w-xl mx-auto font-light">
-            Experiências completas com guias credenciados em português, traslados privativos e hospedagens de alto padrão.
+            Todos os programas transferidos do site original da Girassol Brasil Viagens e Turismo.
           </p>
         </div>
       </section>
@@ -67,7 +70,7 @@ function TourCatalogContent() {
         {/* Filters Sidebar */}
         <aside className="w-full lg:w-72 shrink-0 bg-white rounded-3xl p-6 shadow-premium border border-gray-100 h-fit space-y-6">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-4">
-            <SlidersHorizontal className="w-5 h-5 text-[#1B5E20]" />
+            <SlidersHorizontal className="w-5 h-5 text-[#0B4EA2]" />
             <h3 className="font-bold text-sm text-[#263238]">Filtrar Experiências</h3>
           </div>
 
@@ -75,30 +78,27 @@ function TourCatalogContent() {
           <div>
             <label className="text-xs font-bold text-[#263238] mb-2 block">Palavras-chave</label>
             <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
-              <input 
-                type="text" 
-                placeholder="Ex: Nilo, Pirâmides, Rio..." 
+              <input
+                type="text"
+                placeholder="Ex: Nilo, Pirâmides, Rio..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full text-xs bg-transparent outline-none text-[#263238]" 
+                className="w-full text-xs bg-transparent outline-none text-[#263238]"
               />
-              <Search className="w-4 h-4 text-[#1B5E20]" />
+              <Search className="w-4 h-4 text-[#0B4EA2]" />
             </div>
           </div>
 
           {/* Category Dropdown */}
           <div>
             <label className="text-xs font-bold text-[#263238] mb-2 block">Categoria de Viagem</label>
-            <select 
-              value={category} 
+            <select
+              value={category}
               onChange={e => setCategory(e.target.value)}
-              className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs w-full outline-none focus:border-[#1B5E20] text-[#263238]"
+              className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs w-full outline-none focus:border-[#0B4EA2] text-[#263238]"
             >
               <option value="">Todas as Categorias</option>
-              <option value="Clássico & Histórico">Clássico & Histórico (Nilo)</option>
-              <option value="História & Praia">História & Praia (Mar Vermelho)</option>
-              <option value="Grand Multi-Destino">Multi-Destino (Egito + Jordânia)</option>
-              <option value="Natureza & Luxo Tropical">Brasil & América do Sul</option>
+              {categories.map((item) => <option key={item} value={item}>{item}</option>)}
             </select>
           </div>
 
@@ -106,23 +106,23 @@ function TourCatalogContent() {
           <div>
             <div className="flex justify-between text-xs font-bold text-[#263238] mb-2">
               <span>Orçamento Máximo</span>
-              <span className="text-[#1B5E20]">${priceMax} USD</span>
+              <span className="text-[#0B4EA2]">${priceMax} USD</span>
             </div>
-            <input 
-              type="range" 
-              min="1000" 
-              max="6000" 
+            <input
+              type="range"
+              min="1000"
+              max="5000"
               step="200"
-              value={priceMax} 
+              value={priceMax}
               onChange={e => setPriceMax(e.target.value)}
-              className="w-full accent-[#1B5E20] bg-gray-100" 
+              className="w-full accent-[#0B4EA2] bg-gray-100"
             />
           </div>
 
           {/* Reset Filters */}
-          <button 
-            onClick={() => { setSearch(''); setCategory(''); setPriceMax('6000'); }}
-            className="w-full text-xs text-gray-500 hover:text-[#1B5E20] font-semibold py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+          <button
+            onClick={() => { setSearch(''); setCategory(''); setPriceMax('5000'); }}
+            className="w-full text-xs text-gray-500 hover:text-[#0B4EA2] font-semibold py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             Limpar Filtros
           </button>
@@ -136,35 +136,35 @@ function TourCatalogContent() {
                 <div
                   key={tour.id}
                 >
-                  <Link 
-                    href={`/tours/${tour.slug}`} 
+                  <Link
+                    href={`/tours/${tour.slug}`}
                     className="bg-white rounded-3xl overflow-hidden shadow-premium shadow-premium-hover border border-gray-100 block group h-full flex flex-col justify-between"
                   >
                     <div>
                       <div className="h-60 relative w-full overflow-hidden bg-gray-100">
-                        <img 
-                          src={tour.primary_image} 
+                        <img
+                          src={tour.primary_image}
                           alt={tour.name}
                           loading="eager"
                           decoding="async"
                           onError={(e) => {
                             e.currentTarget.src = '/site-assets/cc25b2eb94a7e175.png';
                           }}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
-                        <div className="absolute top-4 left-4 bg-[#FBC02D] text-xs font-bold px-3 py-1 rounded-full text-[#263238] shadow flex items-center gap-1">
+                        {tour.reviews_count > 0 && <div className="absolute top-4 left-4 bg-[#F59E0B] text-xs font-bold px-3 py-1 rounded-full text-[#263238] shadow flex items-center gap-1">
                           <Star className="w-3.5 h-3.5 fill-current" /> {tour.average_rating} ({tour.reviews_count})
-                        </div>
+                        </div>}
                         <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md rounded-xl p-2 text-white text-[11px] font-semibold">
                           {tour.city_name}
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="flex justify-between items-center text-[10px] uppercase font-bold text-[#1B5E20] mb-2">
+                        <div className="flex justify-between items-center text-[10px] uppercase font-bold text-[#0B4EA2] mb-2">
                           <span>{tour.category}</span>
                           <span className="text-gray-400 font-normal">{tour.duration_days} Dias</span>
                         </div>
-                        <h3 className="font-bold text-lg text-[#263238] group-hover:text-[#1B5E20] transition-colors mb-3 leading-snug">
+                        <h3 className="font-bold text-lg text-[#263238] group-hover:text-[#0B4EA2] transition-colors mb-3 leading-snug">
                           {tour.name}
                         </h3>
                         <p className="text-xs text-[#546E7A] line-clamp-2 font-light leading-relaxed mb-4">
@@ -176,9 +176,9 @@ function TourCatalogContent() {
                     <div className="px-6 pb-6 pt-3 border-t border-gray-50 flex justify-between items-center">
                       <div>
                         <span className="text-[10px] text-gray-400 block">A partir de</span>
-                        <span className="font-bold text-xl text-[#1B5E20]">${tour.base_price} <span className="text-xs font-normal text-gray-500">USD</span></span>
+                        <span className="font-bold text-xl text-[#0B4EA2]">{Number(tour.base_price) > 0 ? `$${tour.base_price}` : 'Consulte'} <span className="text-xs font-normal text-gray-500">USD</span></span>
                       </div>
-                      <span className="bg-gray-50 group-hover:bg-[#1B5E20] group-hover:text-white transition-all text-[#1B5E20] text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1">
+                      <span className="bg-gray-50 group-hover:bg-[#0B4EA2] group-hover:text-white transition-all text-[#0B4EA2] text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1">
                         Ver Roteiro <ArrowRight className="w-3.5 h-3.5" />
                       </span>
                       </div>
@@ -193,9 +193,9 @@ function TourCatalogContent() {
               <p className="text-xs text-gray-500 max-w-sm mx-auto mb-6">
                 Nenhum roteiro correspondeu aos filtros selecionados. Tente ajustar o valor ou buscar outros termos.
               </p>
-              <button 
-                onClick={() => { setSearch(''); setCategory(''); setPriceMax('6000'); }}
-                className="bg-[#1B5E20] text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow"
+              <button
+                onClick={() => { setSearch(''); setCategory(''); setPriceMax('5000'); }}
+                className="bg-[#0B4EA2] text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow"
               >
                 Limpar Filtros
               </button>

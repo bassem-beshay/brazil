@@ -3,9 +3,9 @@
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { 
-  Calendar, Compass, ShieldCheck, Heart, Star, 
-  Check, X, ArrowLeft, MessageCircle, Sparkles, MapPin, Users 
+import {
+  Calendar, Compass, ShieldCheck, Heart, Star,
+  Check, X, ArrowLeft, MessageCircle, Sparkles, MapPin, Users
 } from 'lucide-react';
 import type { TourPackage } from '@/lib/mockData';
 import { useSiteContent } from '@/context/SiteContentContext';
@@ -14,7 +14,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
   const { MOCK_TOURS } = useSiteContent();
   const resolvedParams = use(params);
   const router = useRouter();
-  
+
   const findTour = (slug: string) => MOCK_TOURS.find(t => t.slug === slug) || MOCK_TOURS[0];
   const [tour, setTour] = useState<TourPackage>(findTour(resolvedParams.slug));
   const [wishlisted, setWishlisted] = useState(false);
@@ -54,16 +54,16 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
     <div className="bg-[#F8F9FA] min-h-screen pb-24">
       {/* 1. Luxury Cover Header */}
       <section className="relative h-[54vh] min-h-[380px] bg-[#1A252C] flex items-end overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-55 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroImage}')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/40 to-transparent" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pb-12 w-full text-white">
-          <Link 
-            href="/tours" 
-            className="inline-flex items-center gap-1.5 text-xs text-[#FBC02D] hover:underline font-bold mb-4"
+          <Link
+            href="/tours"
+            className="inline-flex items-center gap-1.5 text-xs text-[#F59E0B] hover:underline font-bold mb-4"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Voltar ao Catálogo de Pacotes
           </Link>
@@ -71,10 +71,10 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
           <div className="flex justify-between items-end flex-wrap gap-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="bg-[#1B5E20] text-white text-xs font-bold px-3 py-0.5 rounded-full uppercase">
+                <span className="bg-[#0B4EA2] text-white text-xs font-bold px-3 py-0.5 rounded-full uppercase">
                   {tour.category}
                 </span>
-                <span className="text-[#FBC02D] text-xs font-bold flex items-center gap-1">
+                <span className="text-[#F59E0B] text-xs font-bold flex items-center gap-1">
                   <Star className="w-3.5 h-3.5 fill-current" /> {tour.average_rating} ({tour.reviews_count} avaliações)
                 </span>
               </div>
@@ -86,10 +86,10 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
               </p>
             </div>
 
-            <button 
+            <button
               onClick={handleWishlist}
               className={`p-3.5 rounded-full glass-effect shadow-md flex items-center justify-center cursor-pointer transition-all ${
-                wishlisted ? 'text-[#EC407A]' : 'text-white hover:text-[#FBC02D]'
+                wishlisted ? 'text-[#EC407A]' : 'text-white hover:text-[#F59E0B]'
               }`}
               title="Salvar nos Favoritos"
             >
@@ -113,15 +113,15 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
           {tour.itinerary && tour.itinerary.length > 0 && (
             <section className="bg-white rounded-3xl p-8 sm:p-10 shadow-premium border border-gray-100">
               <h2 className="text-2xl font-bold text-[#263238] mb-8 flex items-center gap-2">
-                <Calendar className="w-6 h-6 text-[#1B5E20]" />
+                <Calendar className="w-6 h-6 text-[#0B4EA2]" />
                 Roteiro Detalhado Dia a Dia
               </h2>
 
-              <div className="relative border-l-2 border-[#1B5E20]/20 ml-4 pl-8 space-y-10">
+              <div className="relative border-l-2 border-[#0B4EA2]/20 ml-4 pl-8 space-y-10">
                 {tour.itinerary.map((day) => (
                   <div key={day.day} className="relative">
                     {/* Circle badge */}
-                    <div className="absolute -left-12 top-0.5 w-8 h-8 rounded-full bg-[#1B5E20] text-white flex items-center justify-center font-bold text-xs shadow">
+                    <div className="absolute -left-12 top-0.5 w-8 h-8 rounded-full bg-[#0B4EA2] text-white flex items-center justify-center font-bold text-xs shadow">
                       {day.day}
                     </div>
 
@@ -132,7 +132,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
                       {day.description}
                     </p>
                     {day.meals && (
-                      <span className="text-[11px] font-semibold text-[#1B5E20] bg-[#1B5E20]/10 px-3 py-1 rounded-lg inline-block">
+                      <span className="text-[11px] font-semibold text-[#0B4EA2] bg-[#0B4EA2]/10 px-3 py-1 rounded-lg inline-block">
                         🍽️ Refeições: {day.meals}
                       </span>
                     )}
@@ -146,12 +146,12 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
           <section className="bg-white rounded-3xl p-8 sm:p-10 shadow-premium border border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-bold text-base text-[#263238] mb-4 flex items-center gap-2">
-                <Check className="w-5 h-5 text-[#1B5E20]" /> O Que Está Incluso
+                <Check className="w-5 h-5 text-[#0B4EA2]" /> O Que Está Incluso
               </h3>
               <ul className="space-y-3">
                 {tour.inclusions.map((item, idx) => (
                   <li key={idx} className="text-xs text-[#546E7A] flex gap-2.5 items-start">
-                    <Check className="w-4 h-4 text-[#1B5E20] shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#0B4EA2] shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -180,7 +180,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
             <div>
               <span className="text-xs text-gray-400 block mb-1">Preço Inicial por Pessoa</span>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-[#1B5E20]">${tour.base_price}</span>
+                <span className="text-4xl font-bold text-[#0B4EA2]">${tour.base_price}</span>
                 <span className="text-xs text-gray-500 font-semibold">USD</span>
               </div>
               <p className="text-[11px] text-gray-400 mt-1">Valores baseados em acomodação dupla 5★</p>
@@ -188,7 +188,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
 
             <div className="border-t border-gray-100 pt-5">
               <h4 className="font-bold text-sm text-[#263238] mb-3 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#1B5E20]" /> Próximas Saídas Garantidas
+                <Calendar className="w-4 h-4 text-[#0B4EA2]" /> Próximas Saídas Garantidas
               </h4>
 
               <div className="space-y-3">
@@ -197,14 +197,14 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
                   <div key={pkg.id} className="border border-gray-100 rounded-2xl p-4 bg-gray-50/70 space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-bold text-[#263238]">{pkg.title}</span>
-                        <span className="text-xs font-bold text-[#1B5E20]">${pkg.price_per_person} USD</span>
+                        <span className="text-xs font-bold text-[#0B4EA2]">${pkg.price_per_person} USD</span>
                       </div>
                       <p className="text-[11px] text-gray-500">{pkg.start_date} até {pkg.end_date}</p>
                       <div className="flex justify-between items-center pt-2">
                         <span className="text-[10px] text-amber-600 font-semibold">{pkg.available_spots} vagas restantes</span>
-                        <button 
+                        <button
                           onClick={() => selectPackage(pkg)}
-                          className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-xs font-bold px-4 py-1.5 rounded-lg transition-colors cursor-pointer shadow"
+                          className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white text-xs font-bold px-4 py-1.5 rounded-lg transition-colors cursor-pointer shadow"
                         >
                           Reservar Data
                         </button>
@@ -220,15 +220,15 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
             </div>
 
             <div className="border-t border-gray-100 pt-5 space-y-3">
-              <Link 
-                href="/contact#orcamento" 
-                className="w-full bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-xs font-bold py-3.5 rounded-xl block text-center shadow transition-all"
+              <Link
+                href="/contact#orcamento"
+                className="w-full bg-[#0B4EA2] hover:bg-[#073B7A] text-white text-xs font-bold py-3.5 rounded-xl block text-center shadow transition-all"
               >
                 Personalizar Meu Roteiro
               </Link>
-              <a 
-                href="https://wa.me/201060873700" 
-                target="_blank" 
+              <a
+                href="https://wa.me/201060873700"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-[#25D366] hover:bg-emerald-600 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 shadow transition-all"
               >

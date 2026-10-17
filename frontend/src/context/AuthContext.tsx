@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await api.post('/auth/login/', { email, password });
       localStorage.setItem('access_token', res.data.access);
       localStorage.setItem('refresh_token', res.data.refresh);
-      
+
       const profileRes = await api.get('/auth/profile/');
       setUser(profileRes.data);
     } finally {

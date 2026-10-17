@@ -25,13 +25,13 @@ const baseClasses = [
   'focus:outline-none',
   'focus:ring-2',
   'focus:ring-offset-2',
-  'focus:ring-[#1B5E20]/20'
+  'focus:ring-[#0B4EA2]/20'
 ];
 
 const variantClasses = {
-  primary: 'bg-[#1B5E20] text-white border-[#1B5E20] hover:bg-[#2E7D32] hover:border-[#2E7D32]',
+  primary: 'bg-[#0B4EA2] text-white border-[#0B4EA2] hover:bg-[#073B7A] hover:border-[#073B7A]',
   secondary: 'bg-white text-[#263238] border-gray-200 hover:bg-gray-50 hover:border-gray-300',
-  ghost: 'bg-transparent text-[#1B5E20] border-transparent hover:bg-[#1B5E20]/10'
+  ghost: 'bg-transparent text-[#0B4EA2] border-transparent hover:bg-[#0B4EA2]/10'
 };
 
 const sizeClasses = {

@@ -68,7 +68,7 @@ export function getPageMedia(content: SiteContentBundle, slug: string) {
       tiles: [
         {
           href: '/about',
-          title: 'Sobre a Girasol',
+          title: 'Sobre a Girassol',
           description: 'Estrutura, experiência e atendimento.',
           image: cairo?.cover_image || '',
         },

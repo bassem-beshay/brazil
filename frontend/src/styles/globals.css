@@ -3,10 +3,10 @@
 
 @layer base {
   :root {
-    --primary: #1B5E20; /* Amazon Green */
-    --primary-medium: #2E7D32; /* Forest Green */
+    --primary: #0B4EA2; /* Amazon Green */
+    --primary-medium: #073B7A; /* Forest Green */
     --primary-light: #43A047; /* Tropical Green */
-    --accent-yellow: #FBC02D; /* Golden Yellow */
+    --accent-yellow: #F59E0B; /* Golden Yellow */
     --accent-blue: #1565C0; /* Deep Ocean Blue */
     --accent-orange: #FF7043; /* Sunset Orange */
     --accent-pink: #EC407A; /* Brazilian Tropical Pink */
@@ -15,7 +15,7 @@
     --text-dark: #263238; /* Dark Gray */
     --text-light: #546E7A;
     --border: #E0E0E0;
-    
+
     --radius-lg: 1rem;
     --radius-md: 0.75rem;
     --radius-sm: 0.5rem;

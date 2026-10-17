@@ -27,7 +27,7 @@ export default function SitePageView({
       <section className="relative overflow-hidden bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-center">
           <div className="space-y-6">
-            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.24em] text-[#1B5E20] bg-[#1B5E20]/10 px-4 py-2 rounded-full">
+            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.24em] text-[#0B4EA2] bg-[#0B4EA2]/10 px-4 py-2 rounded-full">
               Conteudo institucional
             </span>
             <div className="space-y-3">
@@ -41,13 +41,13 @@ export default function SitePageView({
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/contact#orcamento"
-                className="bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-sm font-bold px-5 py-3 rounded-full shadow-md transition-colors"
+                className="bg-[#0B4EA2] hover:bg-[#073B7A] text-white text-sm font-bold px-5 py-3 rounded-full shadow-md transition-colors"
               >
                 Pedir orcamento
               </Link>
               <Link
                 href="/tours"
-                className="bg-white border border-gray-200 hover:border-[#1B5E20] text-[#263238] text-sm font-bold px-5 py-3 rounded-full shadow-sm transition-colors"
+                className="bg-white border border-gray-200 hover:border-[#0B4EA2] text-[#263238] text-sm font-bold px-5 py-3 rounded-full shadow-sm transition-colors"
               >
                 Ver pacotes
               </Link>
@@ -64,14 +64,14 @@ export default function SitePageView({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#102018]/70 via-[#102018]/20 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                  <p className="text-xs uppercase tracking-[0.25em] text-[#FBC02D] font-bold">
+                  <p className="text-xs uppercase tracking-[0.25em] text-[#F59E0B] font-bold">
                     Imagem relacionada
                   </p>
                   <p className="text-lg font-semibold mt-1">{heroAlt}</p>
                 </div>
               </div>
             ) : (
-              <div className="rounded-[2rem] min-h-[320px] bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] shadow-premium" />
+              <div className="rounded-[2rem] min-h-[320px] bg-gradient-to-br from-[#0B4EA2] to-[#073B7A] shadow-premium" />
             )}
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function SitePageView({
         <section className="max-w-7xl mx-auto px-6 mt-12">
           <div className="flex items-end justify-between gap-4 mb-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] font-bold text-[#1B5E20]">Relacionados</p>
+              <p className="text-xs uppercase tracking-[0.24em] font-bold text-[#0B4EA2]">Relacionados</p>
               <h2 className="text-2xl font-bold text-[#263238]">Paginas e imagens relacionadas</h2>
             </div>
           </div>
