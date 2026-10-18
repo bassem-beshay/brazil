@@ -12,6 +12,8 @@ def main() -> None:
     layout = (ROOT / "frontend/src/app/layout.tsx").read_text(encoding="utf-8")
     about = (ROOT / "frontend/src/app/about/page.tsx").read_text(encoding="utf-8")
     blog = (ROOT / "frontend/src/app/blog/page.tsx").read_text(encoding="utf-8")
+    benefit_pages = (ROOT / "frontend/src/lib/benefitPages.ts").read_text(encoding="utf-8")
+    benefit_route = (ROOT / "frontend/src/app/[slug]/page.tsx").read_text(encoding="utf-8")
     data = json.loads((ROOT / "frontend/src/lib/siteData.generated.json").read_text(encoding="utf-8"))
 
     source_text = "".join(
@@ -41,10 +43,28 @@ def main() -> None:
         "six original benefits": all(
             value in home
             for value in [
-                "Variados Destinos", "Facilidades de Aquisição", "Roteiros Encantadores",
-                "Reservas Rápidas", "Qualidade no Atendimento", "Amor e Cuidado",
+                "Ao viajar conosco você escolhe um time de pessoas que trabalham para a sua máxima satisfação.",
+                "Na Girassol Brasil Viagens e Turismo você tem um sistema de facilidades de aquisição.",
+                "Sabemos que realizar a sua viagem muitas vezes faz parte de um sonho, de uma intenção.",
+                "A nossa equipe em Girassol Brasil Viagens e Turismo atende você, realizando as reservas.",
+                "Além de ser um atendimento rápido, o nosso atendimento é diferenciado.",
+                "A nossa filosofia usada em Girassol Brasil Viagens e Turismo é baseada no amor e cuidado.",
             ]
         ),
+        "six benefit links": all(
+            f"href: '/{slug}'" in home
+            for slug in [
+                "variados-destinos", "facilidades-de-aquisicao", "destinos-encantadores",
+                "reservas-rapidas", "qualidade-no-atendimento", "amor-e-cuidado",
+            ]
+        ),
+        "six internal benefit pages": all(
+            f"slug: '{slug}'" in benefit_pages
+            for slug in [
+                "variados-destinos", "facilidades-de-aquisicao", "destinos-encantadores",
+                "reservas-rapidas", "qualidade-no-atendimento", "amor-e-cuidado",
+            ]
+        ) and "BenefitDetailView" in benefit_route and "getBenefitPage" in benefit_route,
         "AI section removed": "AIChatBot" not in home and "Concierge Inteligente" not in home,
         "newsletter anti-spam": "3 + 4 = ?" in home and 'name="company"' in home,
         "menu order": layout.index("label: 'Início'") < layout.index("label: 'Destinos'") < layout.index("label: 'Pacotes'") < layout.index("label: 'Sobre Nós'") < layout.index("label: 'Perguntas Frequentes'") < layout.index("label: 'Blog'") < layout.index("label: 'Contato'"),

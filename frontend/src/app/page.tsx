@@ -18,12 +18,12 @@ const trustItems = [
 ];
 
 const benefits = [
-  { icon: Globe2, title: 'Variados Destinos', text: 'Opções nacionais e internacionais para diferentes estilos de viagem.' },
-  { icon: CreditCard, title: 'Facilidades de Aquisição', text: 'Condições planejadas para tornar sua próxima viagem possível.' },
-  { icon: Route, title: 'Roteiros Encantadores', text: 'Programas cuidadosamente organizados para experiências inesquecíveis.' },
-  { icon: Timer, title: 'Reservas Rápidas', text: 'Atendimento ágil e acompanhamento em todas as etapas da reserva.' },
-  { icon: Headphones, title: 'Qualidade no Atendimento', text: 'Orientação personalizada antes, durante e depois da viagem.' },
-  { icon: Heart, title: 'Amor e Cuidado', text: 'Cada detalhe é tratado com dedicação, respeito e responsabilidade.' },
+  { icon: Globe2, title: 'Variados Destinos', text: 'Ao viajar conosco você escolhe um time de pessoas que trabalham para a sua máxima satisfação.', href: '/variados-destinos' },
+  { icon: CreditCard, title: 'Facilidades de Aquisição', text: 'Na Girassol Brasil Viagens e Turismo você tem um sistema de facilidades de aquisição.', href: '/facilidades-de-aquisicao' },
+  { icon: Route, title: 'Roteiros Encantadores', text: 'Sabemos que realizar a sua viagem muitas vezes faz parte de um sonho, de uma intenção.', href: '/destinos-encantadores' },
+  { icon: Timer, title: 'Reservas Rápidas', text: 'A nossa equipe em Girassol Brasil Viagens e Turismo atende você, realizando as reservas.', href: '/reservas-rapidas' },
+  { icon: Headphones, title: 'Qualidade no Atendimento', text: 'Além de ser um atendimento rápido, o nosso atendimento é diferenciado.', href: '/qualidade-no-atendimento' },
+  { icon: Heart, title: 'Amor e Cuidado', text: 'A nossa filosofia usada em Girassol Brasil Viagens e Turismo é baseada no amor e cuidado.', href: '/amor-e-cuidado' },
 ];
 
 export default function HomePage() {
@@ -157,9 +157,9 @@ export default function HomePage() {
         ))}
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 mt-28">
+      <section id="por-que-girassol" className="max-w-7xl mx-auto px-6 mt-28 scroll-mt-32">
         <div className="text-center max-w-4xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 bg-[#0B4EA2]/10 text-[#0B4EA2] font-bold text-xs uppercase tracking-widest px-5 py-2 rounded-full mb-4">
+          <div className="inline-flex items-center gap-2 bg-[#0B4EA2]/10 text-[#0B4EA2] font-bold text-sm sm:text-base uppercase tracking-widest px-7 py-3 rounded-full mb-5">
             <span className="w-2 h-2 rounded-full bg-[#F59E0B]" />
             POR QUE ESCOLHER GIRASSO BRASIL VIAGENS E TURISMO
           </div>
@@ -173,13 +173,14 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
           {benefits.map((benefit) => (
-            <div key={benefit.title} className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100 hover:border-[#F59E0B]/50 transition-all">
+            <Link href={benefit.href} key={benefit.title} className="bg-white rounded-3xl p-8 shadow-premium border border-gray-100 hover:border-[#F59E0B]/50 transition-all group block">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B4EA2] to-[#F59E0B] flex items-center justify-center text-white shadow-md mb-5">
                 <benefit.icon className="w-7 h-7" />
               </div>
               <h3 className="text-xl font-bold text-[#263238] mb-3">{benefit.title}</h3>
               <p className="text-sm text-[#546E7A] leading-relaxed">{benefit.text}</p>
-            </div>
+              <span className="mt-5 inline-flex items-center gap-1 text-xs font-bold text-[#0B4EA2] group-hover:text-[#F59E0B]">Leia mais <ArrowRight className="w-3.5 h-3.5" /></span>
+            </Link>
           ))}
         </div>
       </section>
