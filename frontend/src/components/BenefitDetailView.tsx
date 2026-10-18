@@ -27,7 +27,7 @@ export default function BenefitDetailView({ page }: { page: BenefitPage }) {
               <section key={`${page.slug}-${sectionIndex}`}>
                 {section.heading && <h2 className="mb-5 text-2xl font-bold text-[#0B4EA2]">{section.heading}</h2>}
                 {section.paragraphs?.map((paragraph) => (
-                  <p key={paragraph} className="mb-4 text-justify text-sm leading-7 text-[#546E7A] sm:text-base sm:leading-8">{paragraph}</p>
+                  <p key={paragraph} className="mb-4 text-left text-sm leading-7 text-[#546E7A] sm:text-justify sm:text-base sm:leading-8">{paragraph}</p>
                 ))}
                 {section.bullets && (
                   <ul className="space-y-4">
