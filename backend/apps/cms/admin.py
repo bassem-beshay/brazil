@@ -25,7 +25,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'author', 'featured', 'published_at', 'display_order')
     list_filter = ('category', 'author', 'featured', 'published_at')
-    search_fields = ('title', 'content', 'excerpt')
+    search_fields = ('title', 'content', 'excerpt', 'main_image_credit', 'main_image_source_url')
     prepopulated_fields = {'slug': ('title',)}
 
 

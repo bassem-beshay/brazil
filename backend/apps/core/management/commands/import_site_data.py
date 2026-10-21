@@ -51,6 +51,17 @@ def clean_text(value: str | None) -> str:
     return re.sub(r'\s+', ' ', text).strip()
 
 
+def clean_blog_content(value: str | None) -> str:
+    """Normalize article whitespace without destroying Markdown paragraphs."""
+    if not value:
+        return ''
+    text = str(value).replace('\r\n', '\n').replace('\r', '\n')
+    text = re.sub(r'[ \t]+', ' ', text)
+    text = re.sub(r' *\n *', '\n', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
+
 def parse_pt_date(value: str | None) -> datetime | None:
     if not value:
         return None
@@ -88,6 +99,32 @@ def parse_decimal(value: str | int | float | None) -> str:
 def media_value(value: str | None) -> str:
     value = clean_text(value)
     return value
+
+
+def blog_gallery(value) -> list[dict[str, str]]:
+    """Normalize blog gallery data while accepting legacy URL-only entries."""
+    if not isinstance(value, list):
+        return []
+    normalized = []
+    for image in value:
+        if isinstance(image, str):
+            image = {'url': image}
+        if not isinstance(image, dict):
+            continue
+        url = media_value(image.get('url') or '')
+        if not url:
+            continue
+        normalized_image = {
+            'url': url,
+            'credit': clean_text(image.get('credit') or ''),
+            'source_url': clean_text(image.get('source_url') or ''),
+        }
+        for optional_key in ('alt', 'caption'):
+            optional_value = clean_text(image.get(optional_key) or '')
+            if optional_value:
+                normalized_image[optional_key] = optional_value
+        normalized.append(normalized_image)
+    return normalized
 
 
 def faq_category(value: str | None) -> str:
@@ -308,10 +345,23 @@ class Command(BaseCommand):
                     'display_order': blog_order,
                     'author': author,
                     'title': clean_text(item.get('title') or 'Blog Post'),
-                    'content': clean_text(item.get('content') or ''),
+                    'content': clean_blog_content(item.get('content') or ''),
                     'excerpt': clean_text(item.get('excerpt') or ''),
                     'category': clean_text(item.get('category') or ''),
                     'main_image': media_value(item.get('cover_image') or ''),
+                    'main_image_credit': clean_text(
+                        item.get('image_credit')
+                        or item.get('cover_image_credit')
+                        or item.get('main_image_credit')
+                        or ''
+                    ),
+                    'main_image_source_url': clean_text(
+                        item.get('image_source_url')
+                        or item.get('cover_image_source_url')
+                        or item.get('main_image_source_url')
+                        or ''
+                    ),
+                    'gallery': blog_gallery(item.get('gallery') or []),
                     'published_at': parse_pt_date(item.get('published_at')),
                     'published_label': clean_text(item.get('published_at') or ''),
                     'read_time': clean_text(item.get('read_time') or ''),

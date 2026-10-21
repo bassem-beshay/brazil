@@ -57,6 +57,8 @@ function usableImage(image: unknown) {
     && (
       image.startsWith('/site-assets/')
       || image.startsWith('/girassol-media/')
+      || image.startsWith('/blog-sources/')
+      || image.startsWith('/media/')
       || image.startsWith('https://www.girassolviagens.com/wp-content/uploads/')
     )
     && image !== LEGACY_AIRPLANE_IMAGE;

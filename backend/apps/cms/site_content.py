@@ -9,8 +9,44 @@ from .models import Blog, FAQ, Office, Page, SiteProfile, TeamMember, Testimonia
 
 
 def image_name(field) -> str:
-    """Return the stored path without forcing local site assets through MEDIA_URL."""
-    return str(getattr(field, 'name', field) or '')
+    """Return a public URL for both bundled assets and uploaded media files."""
+    raw_name = str(getattr(field, 'name', field) or '').strip()
+    if not raw_name:
+        return ''
+    if raw_name.startswith(('http://', 'https://', '//', 'data:', '/')):
+        return raw_name
+    if raw_name.startswith(('site-assets/', 'girassol-media/', 'blog-sources/')):
+        return f'/{raw_name}'
+    try:
+        return str(field.url)
+    except (AttributeError, ValueError):
+        return raw_name
+
+
+def blog_gallery(value) -> list[dict[str, str]]:
+    """Normalize legacy string entries to the attributed gallery object format."""
+    if not isinstance(value, list):
+        return []
+    normalized = []
+    for image in value:
+        if isinstance(image, str):
+            image = {'url': image}
+        if not isinstance(image, dict):
+            continue
+        url = str(image.get('url') or '').strip()
+        if not url:
+            continue
+        normalized_image = {
+            'url': image_name(url),
+            'credit': str(image.get('credit') or '').strip(),
+            'source_url': str(image.get('source_url') or '').strip(),
+        }
+        for optional_key in ('alt', 'caption'):
+            optional_value = str(image.get(optional_key) or '').strip()
+            if optional_value:
+                normalized_image[optional_key] = optional_value
+        normalized.append(normalized_image)
+    return normalized
 
 
 def number(value: Decimal | int | float | None) -> float:
@@ -94,6 +130,9 @@ def build_site_content() -> dict:
             'excerpt': item.excerpt,
             'content': item.content,
             'cover_image': image_name(item.main_image),
+            'image_credit': item.main_image_credit,
+            'image_source_url': item.main_image_source_url,
+            'gallery': blog_gallery(item.gallery),
             'category': item.category,
             'author': {
                 'name': item.author.name,

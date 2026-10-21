@@ -19,6 +19,17 @@ class Blog(BaseModel):
     excerpt = models.TextField(blank=True, default='')
     category = models.CharField(max_length=150, blank=True, default='')
     main_image = models.ImageField(upload_to='blogs/')
+    main_image_credit = models.CharField(max_length=255, blank=True, default='')
+    main_image_source_url = models.URLField(blank=True, default='')
+    gallery = models.JSONField(
+        default=list,
+        blank=True,
+        help_text=(
+            'List of image objects: '
+            "[{'url': '/path/image.jpg', 'credit': 'Photographer', "
+            "'source_url': 'https://example.com/source'}]"
+        ),
+    )
     published_at = models.DateTimeField(blank=True, null=True)
     published_label = models.CharField(max_length=100, blank=True, default='')
     read_time = models.CharField(max_length=100, blank=True, default='')

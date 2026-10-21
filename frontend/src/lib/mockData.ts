@@ -62,12 +62,26 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   cover_image: string;
+  cover_image_alt?: string;
+  image_credit?: string;
+  image_source_url?: string;
+  cover_image_credit?: string;
+  cover_image_source_url?: string;
+  gallery?: Array<string | BlogGalleryImage>;
   category: string;
   author: { name: string; role: string; avatar: string };
   published_at: string;
   read_time: string;
   tags: string[];
   featured?: boolean;
+}
+
+export interface BlogGalleryImage {
+  url: string;
+  alt?: string;
+  caption?: string;
+  credit?: string;
+  source_url?: string;
 }
 
 export interface FAQItem {
