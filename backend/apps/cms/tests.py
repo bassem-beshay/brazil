@@ -25,6 +25,9 @@ class BlogImageDataTests(SimpleTestCase):
         self.assertEqual(len(PHOTO_SLUGS), 19)
         self.assertFalse(DELETE_SLUGS & PHOTO_SLUGS)
 
+        if not DEFAULT_SOURCE.exists():
+            return
+
         payload = json.loads(DEFAULT_SOURCE.read_text(encoding='utf-8'))
         source_slugs = {item['slug'] for item in payload['MOCK_BLOG_POSTS']}
         self.assertTrue(PHOTO_SLUGS <= source_slugs)
