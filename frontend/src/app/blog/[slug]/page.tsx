@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import BlogPostView from '@/components/BlogPostView';
 import { applyLocalTravelMedia } from '@/lib/contentMedia';
@@ -21,9 +22,14 @@ async function getPageContent(slug: string) {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const { post } = await getPageContent(slug);
+  const requestHeaders = await headers();
+  const host = requestHeaders.get('x-forwarded-host') || requestHeaders.get('host');
+  const protocol = requestHeaders.get('x-forwarded-proto') || (host?.startsWith('localhost') ? 'http' : 'https');
+  const metadataBase = host ? new URL(`${protocol}://${host}`) : undefined;
 
   if (!post) {
     return {
+      metadataBase,
       title: 'Artigo não encontrado | Girassol Brasil Viagens',
     };
   }
@@ -31,6 +37,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const description = post.excerpt.replace(/\s+/g, ' ').trim().slice(0, 160);
 
   return {
+    metadataBase,
     title: `${post.title} | Blog Girassol Brasil Viagens`,
     description,
     openGraph: {
