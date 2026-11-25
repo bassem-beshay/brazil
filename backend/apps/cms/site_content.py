@@ -122,30 +122,11 @@ def build_site_content() -> dict:
             'packages': packages,
         })
 
-    blogs = [
-        {
-            'id': item.source_id or str(item.pk),
-            'title': item.title,
-            'slug': item.slug,
-            'excerpt': item.excerpt,
-            'content': item.content,
-            'cover_image': image_name(item.main_image),
-            'image_credit': item.main_image_credit,
-            'image_source_url': item.main_image_source_url,
-            'gallery': blog_gallery(item.gallery),
-            'category': item.category,
-            'author': {
-                'name': item.author.name,
-                'role': item.author.bio or '',
-                'avatar': image_name(item.author.avatar),
-            },
-            'published_at': item.published_label or (item.published_at.date().isoformat() if item.published_at else ''),
-            'read_time': item.read_time,
-            'tags': item.tags,
-            'featured': item.featured,
-        }
-        for item in Blog.objects.select_related('author').order_by('display_order', '-published_at', '-created_at')
-    ]
+    # Blog content is served by the paginated `/cms/blogs/` API. Keeping the
+    # full archive out of this layout payload avoids serializing every article
+    # into every page response.
+    blogs = []
+    blog_count = Blog.objects.count()
     faqs = [
         {'id': item.source_id or str(item.pk), 'category': item.source_category or item.category,
          'question': item.question, 'answer': item.answer}
@@ -181,7 +162,7 @@ def build_site_content() -> dict:
         'user_count': profile.user_count if profile else 0,
         'post_count': profile.post_count if profile else 0,
         'tour_count': profile.tour_count if profile else len(tours),
-        'blog_count': profile.blog_count if profile else len(blogs),
+        'blog_count': blog_count,
         'page_count': profile.page_count if profile else len(pages),
     }
     return {

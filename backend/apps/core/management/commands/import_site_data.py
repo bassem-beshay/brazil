@@ -16,6 +16,8 @@ from apps.cms.models import (
 from apps.destinations.models import City, Country, Destination
 from apps.tours.models import Category, Tour, TourImage, TourPackage
 
+from apps.core.blog_review import apply_blog_review_data
+
 
 BACKEND_DIR = Path(__file__).resolve().parents[4]
 REPOSITORY_DIR = BACKEND_DIR.parent
@@ -158,13 +160,14 @@ class Command(BaseCommand):
 
         destinations_data = payload.get('MOCK_DESTINATIONS', [])
         tours_data = payload.get('MOCK_TOURS', [])
-        blogs_data = payload.get('MOCK_BLOG_POSTS', [])
+        blogs_data = apply_blog_review_data(payload.get('MOCK_BLOG_POSTS', []))
         faqs_data = payload.get('MOCK_FAQS', [])
         reviews_data = payload.get('MOCK_REVIEWS', [])
         offices_data = payload.get('MOCK_OFFICES', [])
         team_data = payload.get('MOCK_TEAM', [])
         pages_data = payload.get('PAGES', [])
         meta = payload.get('SITE_META', {})
+        meta['blog_count'] = len(blogs_data)
 
         if options['clean']:
             TourPackage.objects.all().delete()

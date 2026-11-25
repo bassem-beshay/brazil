@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Author, Blog, FAQ, Banner, Partner, Settings, Page, Menu
+from .site_content import blog_gallery, image_name
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,6 +62,60 @@ class BlogSerializer(serializers.ModelSerializer):
             'gallery', 'published_at', 'published_label', 'read_time', 'featured',
             'tags', 'seo_title', 'seo_description',
         )
+
+
+class BlogSummarySerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField()
+    cover_image = serializers.SerializerMethodField()
+    cover_image_alt = serializers.SerializerMethodField()
+    image_credit = serializers.CharField(source='main_image_credit')
+    image_source_url = serializers.CharField(source='main_image_source_url')
+    author = serializers.SerializerMethodField()
+    published_at = serializers.SerializerMethodField()
+    published_at_iso = serializers.SerializerMethodField()
+
+    def get_id(self, obj):
+        return obj.source_id or str(obj.pk)
+
+    def get_cover_image(self, obj):
+        return image_name(obj.main_image)
+
+    def get_cover_image_alt(self, obj):
+        return obj.title
+
+    def get_author(self, obj):
+        return {
+            'name': obj.author.name,
+            'role': obj.author.bio or '',
+            'avatar': image_name(obj.author.avatar),
+        }
+
+    def get_published_at(self, obj):
+        if obj.published_label:
+            return obj.published_label
+        return obj.published_at.date().isoformat() if obj.published_at else ''
+
+    def get_published_at_iso(self, obj):
+        return obj.published_at.isoformat() if obj.published_at else None
+
+    class Meta:
+        model = Blog
+        fields = (
+            'id', 'title', 'slug', 'excerpt', 'cover_image', 'cover_image_alt',
+            'image_credit', 'image_source_url', 'category', 'author',
+            'published_at', 'published_at_iso', 'read_time', 'tags', 'featured', 'seo_title',
+            'seo_description', 'updated_at',
+        )
+
+
+class BlogDetailSerializer(BlogSummarySerializer):
+    gallery = serializers.SerializerMethodField()
+
+    def get_gallery(self, obj):
+        return blog_gallery(obj.gallery)
+
+    class Meta(BlogSummarySerializer.Meta):
+        fields = BlogSummarySerializer.Meta.fields + ('content', 'gallery')
 
 class FAQSerializer(serializers.ModelSerializer):
     class Meta:

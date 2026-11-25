@@ -71,9 +71,13 @@ export interface BlogPost {
   category: string;
   author: { name: string; role: string; avatar: string };
   published_at: string;
+  published_at_iso?: string | null;
   read_time: string;
   tags: string[];
   featured?: boolean;
+  seo_title?: string | null;
+  seo_description?: string | null;
+  updated_at?: string;
 }
 
 export interface BlogGalleryImage {

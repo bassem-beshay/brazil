@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -62,6 +63,12 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
     () => (post.gallery || []).map((item, index) => normalizeGalleryItem(item, post.title, index)).filter((item) => item.url),
     [post.gallery, post.title],
   );
+  const contentBlocks = useMemo(() => {
+    const blocks = post.content.split(/\n\s*\n/).filter(Boolean);
+    const first = blocks[0]?.replace(/^#{1,2}\s+/, '').trim().toLocaleLowerCase('pt-BR');
+    if (first === post.title.trim().toLocaleLowerCase('pt-BR')) return blocks.slice(1);
+    return blocks;
+  }, [post.content, post.title]);
 
   const shareArticle = async () => {
     const url = window.location.href;
@@ -106,11 +113,13 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
   return (
     <div className="min-h-screen bg-[#F8F9FA] pb-24">
       <section className="relative flex h-[48vh] min-h-[340px] items-end overflow-hidden bg-[#1A252C]">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-45"
-          style={{ backgroundImage: `url('${post.cover_image}')` }}
-          role="img"
-          aria-label={post.cover_image_alt || post.title}
+        <Image
+          src={post.cover_image}
+          alt={post.cover_image_alt || post.title}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-45"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A252C] via-black/50 to-transparent" />
 
@@ -128,7 +137,7 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
 
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex items-center gap-3">
-              <img src={post.author.avatar} alt="" loading="eager" decoding="async" className="h-10 w-10 rounded-full border border-white/40 object-cover" />
+              <Image src={post.author.avatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full border border-white/40 object-cover" />
               <div>
                 <span className="block text-xs font-bold text-white">{post.author.name}</span>
                 <span className="flex items-center gap-1 text-[10px] text-gray-300">
@@ -150,7 +159,7 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
       <div className="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-3">
         <article className="rounded-3xl border border-gray-100 bg-white p-8 shadow-premium sm:p-12 lg:col-span-2">
           <div className="prose prose-sm max-w-none space-y-6 leading-relaxed text-[#263238] sm:prose-base">
-            {post.content.split(/\n\s*\n/).map((paragraph, index) => {
+            {contentBlocks.map((paragraph, index) => {
               if (paragraph.startsWith('# ')) {
                 return <h2 key={index} className="pt-4 text-2xl font-bold text-[#263238] sm:text-3xl">{paragraph.replace(/^# /, '')}</h2>;
               }
@@ -175,7 +184,7 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
                 {gallery.map((image, index) => (
                   <figure key={`${image.url}-${index}`} className={gallery.length % 2 === 1 && index === 0 ? 'sm:col-span-2' : undefined}>
                     <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100">
-                      <img src={image.url} alt={image.alt || ''} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]" />
+                      <Image src={image.url} alt={image.alt || ''} width={1200} height={900} sizes="(min-width: 640px) 50vw, 100vw" className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]" />
                     </div>
                     {(image.caption || image.credit || image.source_url) && (
                       <figcaption className="mt-2 flex flex-wrap items-start justify-between gap-2 text-xs leading-relaxed text-[#546E7A]">
@@ -212,11 +221,11 @@ export default function BlogPostView({ post, relatedTour }: BlogPostViewProps) {
             <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-premium">
               <span className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-[#0B4EA2]">Pacote recomendado para este roteiro</span>
               <div className="mb-4 h-44 overflow-hidden rounded-2xl">
-                <img
+                <Image
                   src={relatedTour.primary_image}
                   alt={relatedTour.name}
-                  loading="lazy"
-                  decoding="async"
+                  width={800}
+                  height={440}
                   onError={(event) => { event.currentTarget.src = '/site-assets/02c648d21222bbd8.jpg'; }}
                   className="h-full w-full object-cover"
                 />
