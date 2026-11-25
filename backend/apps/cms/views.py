@@ -30,7 +30,9 @@ class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
 
 class BlogViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
-    queryset = Blog.objects.select_related('author').all().order_by('-published_at', '-created_at')
+    queryset = Blog.objects.select_related('author').all().order_by(
+        '-published_at', 'display_order', 'slug'
+    )
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['author']
     search_fields = ['title', 'excerpt', 'content', 'tags']
