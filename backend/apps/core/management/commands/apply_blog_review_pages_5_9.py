@@ -36,11 +36,13 @@ class Command(BaseCommand):
         if missing:
             raise CommandError(f'Required blog targets are missing: {missing}')
 
-        for slug, directive in PAGES_5_9_IMAGE_DIRECTIVES.items():
-            for image in directive['gallery']:
-                asset = REPOSITORY_DIR / 'frontend' / 'public' / image['url'].lstrip('/')
-                if not asset.exists():
-                    raise CommandError(f'Approved image is missing: {asset}')
+        public_root = REPOSITORY_DIR / 'frontend' / 'public'
+        if public_root.exists():
+            for slug, directive in PAGES_5_9_IMAGE_DIRECTIVES.items():
+                for image in directive['gallery']:
+                    asset = public_root / image['url'].lstrip('/')
+                    if not asset.exists():
+                        raise CommandError(f'Approved image is missing: {asset}')
 
         delete_matches = set(
             Blog.objects.filter(slug__in=PAGES_5_9_DELETE_SLUGS).values_list('slug', flat=True)
